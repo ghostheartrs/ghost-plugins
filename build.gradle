@@ -1,0 +1,34 @@
+plugins {
+    id 'java'
+}
+
+def runeLiteVersion = 'latest.release'
+def krakenApiVersion = '1.0.12'
+
+group = 'com.krakenplugins'
+version = '1.0.0'
+
+repositories {
+    mavenLocal()
+    maven {
+        url = 'https://repo.runelite.net'
+    }
+    mavenCentral()
+}
+
+dependencies {
+    dependencies {
+//        compileOnly group: 'com.github.cbartram', name:'kraken-api', version: krakenApiVersion
+        compileOnly group: 'net.runelite', name:'client', version: runeLiteVersion
+        compileOnly 'org.projectlombok:lombok:1.18.30'
+        annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+        testImplementation 'junit:junit:4.12'
+        testImplementation group: 'net.runelite', name:'client', version: runeLiteVersion
+        testImplementation group: 'net.runelite', name:'jshell', version: runeLiteVersion
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
