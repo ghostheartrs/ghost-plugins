@@ -3,7 +3,7 @@ plugins {
 }
 
 def runeLiteVersion = 'latest.release'
-def krakenApiVersion = '1.0.12'
+def krakenApiVersion = '1.0.14'
 
 group = 'com.krakenplugins'
 version = '1.0.0'
@@ -14,11 +14,12 @@ repositories {
         url = 'https://repo.runelite.net'
     }
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
     dependencies {
-//        compileOnly group: 'com.github.cbartram', name:'kraken-api', version: krakenApiVersion
+        implementation group: 'com.github.cbartram', name:'kraken-api', version: krakenApiVersion
         compileOnly group: 'net.runelite', name:'client', version: runeLiteVersion
         compileOnly 'org.projectlombok:lombok:1.18.30'
         annotationProcessor 'org.projectlombok:lombok:1.18.30'

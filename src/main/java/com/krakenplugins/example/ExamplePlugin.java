@@ -3,6 +3,7 @@ package com.krakenplugins.example;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import com.krakenplugins.example.script.MiningScript;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -15,15 +16,12 @@ import net.runelite.client.eventbus.Subscribe;
 
 @Singleton
 @PluginDescriptor(
-        name = "Alchemical Hydra",
+        name = "Example Plugin",
         enabledByDefault = false,
-        description = "Tracks Prayers and specials for the Alchemical Hydra.",
-        tags = {"alchemical", "hydra", "alch", "boss", "pvm", "slayer"}
+        description = "Demonstrates an example of building an automation plugin using the Kraken API.",
+        tags = {"example", "automation", "kraken"}
 )
 public class ExamplePlugin extends Plugin {
-    private static final String MESSAGE_NEUTRALIZE = "The chemicals neutralise the Alchemical Hydra's defences!";
-    private static final String MESSAGE_STUN = "The Alchemical Hydra temporarily stuns you.";
-    private static final int[] HYDRA_REGIONS = {5279, 5280, 5535, 5536};
 
     @Inject
     private Client client;
@@ -32,10 +30,8 @@ public class ExamplePlugin extends Plugin {
     @Inject
     private ClientThread clientThread;
 
-
     @Inject
-    private PrayerOverlay prayerOverlay;
-
+    private MiningScript miningScript;
 
     @Provides
     ExamplePluginConfig provideConfig(final ConfigManager configManager) {
@@ -45,17 +41,15 @@ public class ExamplePlugin extends Plugin {
     @Override
     protected void startUp() {
         if (client.getGameState() == GameState.LOGGED_IN) {
-            init();
+            miningScript.start();
         }
-    }
-
-    private void init() {
-
     }
 
     @Override
     protected void shutDown() {
-
+        if(miningScript.isRunning()) {
+            miningScript.stop();
+        }
     }
 
     @Subscribe
@@ -64,7 +58,7 @@ public class ExamplePlugin extends Plugin {
 
         switch (gameState) {
             case LOGGED_IN:
-                init();
+                startUp();
                 break;
             case HOPPING:
             case LOGIN_SCREEN:
