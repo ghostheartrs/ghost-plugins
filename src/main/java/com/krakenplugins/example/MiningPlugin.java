@@ -1,8 +1,10 @@
 package com.krakenplugins.example;
 
+import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import com.krakenplugins.example.script.MiningModule;
 import com.krakenplugins.example.script.MiningScript;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -16,12 +18,12 @@ import net.runelite.client.eventbus.Subscribe;
 
 @Singleton
 @PluginDescriptor(
-        name = "Example Plugin",
+        name = "Mining Plugin",
         enabledByDefault = false,
-        description = "Demonstrates an example of building an automation plugin using the Kraken API.",
+        description = "Demonstrates an example of building a Mining automation plugin using the Kraken API.",
         tags = {"example", "automation", "kraken"}
 )
-public class ExamplePlugin extends Plugin {
+public class MiningPlugin extends Plugin {
 
     @Inject
     private Client client;
@@ -34,8 +36,13 @@ public class ExamplePlugin extends Plugin {
     private MiningScript miningScript;
 
     @Provides
-    ExamplePluginConfig provideConfig(final ConfigManager configManager) {
-        return configManager.getConfig(ExamplePluginConfig.class);
+    MiningConfig provideConfig(final ConfigManager configManager) {
+        return configManager.getConfig(MiningConfig.class);
+    }
+
+    @Override
+    public void configure(final Binder binder) {
+        binder.install(new MiningModule());
     }
 
     @Override

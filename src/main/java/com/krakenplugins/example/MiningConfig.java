@@ -7,7 +7,7 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 
 @ConfigGroup("exampleplugin")
-public interface ExamplePluginConfig extends Config {
+public interface MiningConfig extends Config {
 
 	@ConfigSection(
 		name = "General",
