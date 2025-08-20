@@ -22,11 +22,6 @@ public class InMiningAreaCondition extends BaseScriptNode implements ConditionNo
     @Override
     public boolean checkCondition() {
         WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
-        boolean inArea = playerLocation.distanceTo(MINING_AREA) <= MINING_AREA_RADIUS;
-
-        if (!inArea) {
-            log.info("Player not in mining area, current location: X={}, Y={}, Distance: {}", playerLocation.getX(), playerLocation.getY(), playerLocation.distanceTo(MINING_AREA));
-        }
-        return inArea;
+        return playerLocation.distanceTo(MINING_AREA) <= MINING_AREA_RADIUS;
     }
 }

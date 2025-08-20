@@ -12,6 +12,7 @@ import java.util.Random;
 @Singleton
 public class ScriptContext {
     private boolean isMining = false;
+    private boolean isWalking = false;
     private TileObject targetRock = null;
     private long lastActionTime = 0;
     private final Random random = new Random();

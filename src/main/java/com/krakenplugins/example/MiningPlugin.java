@@ -4,9 +4,11 @@ import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import com.kraken.api.overlay.MovementOverlay;
 import com.krakenplugins.example.script.MiningModule;
 import com.krakenplugins.example.script.MiningScript;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
@@ -15,7 +17,10 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.ui.overlay.OverlayManager;
+import shortestpath.ShortestPathConfig;
 
+@Slf4j
 @Singleton
 @PluginDescriptor(
         name = "Mining Plugin",
@@ -33,6 +38,13 @@ public class MiningPlugin extends Plugin {
     private ClientThread clientThread;
 
     @Inject
+    private OverlayManager overlayManager;
+
+    // Helper Overlay for displaying movement paths from the MovementService within the API.
+    @Inject
+    private MovementOverlay movementOverlay;
+
+    @Inject
     private MiningScript miningScript;
 
     @Provides
@@ -47,14 +59,18 @@ public class MiningPlugin extends Plugin {
 
     @Override
     protected void startUp() {
+        overlayManager.add(movementOverlay);
         if (client.getGameState() == GameState.LOGGED_IN) {
+            log.info("Starting Mining Plugin...");
             miningScript.start();
         }
     }
 
     @Override
     protected void shutDown() {
+        overlayManager.remove(movementOverlay);
         if(miningScript.isRunning()) {
+            log.info("Shutting down Mining Plugin...");
             miningScript.stop();
         }
     }

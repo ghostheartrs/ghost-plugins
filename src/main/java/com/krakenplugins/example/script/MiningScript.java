@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import net.runelite.api.coords.WorldArea;
+import net.runelite.api.coords.WorldPoint;
 
 import java.util.List;
 
@@ -27,8 +28,8 @@ public class MiningScript extends BehaviorTreeScript {
     public static final int IRON_ORE_ID = 440;
     public static final List<Integer> IRON_ROCK_ID = List.of(11364, 11365);
     public static final int IRON_ROCK_DEPLETED_ID = 11391;
-    public static final WorldArea MINING_AREA = new WorldArea(3279, 3371, 16, 16, 0);
-    public static final WorldArea BANK_AREA = new WorldArea(3250, 3423, 7, 7, 0); // Varrock East bank
+    public static final WorldPoint MINING_AREA = new WorldPoint(3287, 3367, 0);
+    public static final WorldPoint BANK_AREA = new WorldPoint(3253, 3420, 0); // Varrock East bank
     public static final int MINING_AREA_RADIUS = 10;
     public static final int BANK_RADIUS = 3;
 
@@ -111,7 +112,7 @@ public class MiningScript extends BehaviorTreeScript {
 
     @Override
     protected long onBehaviorTreeSuccess() {
-        return getRandomDelay(100, 300);
+        return getRandomDelay(1000, 3000);
     }
 
     @Override
@@ -122,7 +123,7 @@ public class MiningScript extends BehaviorTreeScript {
 
     @Override
     protected long onBehaviorTreeRunning() {
-        return getRandomDelay(50, 150);
+        return getRandomDelay(2000, 3000);
     }
 
     @Override
