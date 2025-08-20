@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.kraken.api.overlay.MovementOverlay;
+import com.krakenplugins.example.overlay.ScriptOverlay;
 import com.krakenplugins.example.script.MiningModule;
 import com.krakenplugins.example.script.MiningScript;
 import lombok.Getter;
@@ -45,6 +46,9 @@ public class MiningPlugin extends Plugin {
     private MovementOverlay movementOverlay;
 
     @Inject
+    private ScriptOverlay scriptOverlay;
+
+    @Inject
     private MiningScript miningScript;
 
     @Provides
@@ -60,6 +64,7 @@ public class MiningPlugin extends Plugin {
     @Override
     protected void startUp() {
         overlayManager.add(movementOverlay);
+        overlayManager.add(scriptOverlay);
         if (client.getGameState() == GameState.LOGGED_IN) {
             log.info("Starting Mining Plugin...");
             miningScript.start();
@@ -69,6 +74,7 @@ public class MiningPlugin extends Plugin {
     @Override
     protected void shutDown() {
         overlayManager.remove(movementOverlay);
+        overlayManager.remove(scriptOverlay);
         if(miningScript.isRunning()) {
             log.info("Shutting down Mining Plugin...");
             miningScript.stop();

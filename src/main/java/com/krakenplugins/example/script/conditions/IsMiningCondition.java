@@ -32,6 +32,7 @@ public class IsMiningCondition extends BaseScriptNode implements ConditionNode {
                 localPlayer.getAnimation() == AnimationID.MINING_DRAGON_PICKAXE;
 
         context.setMining(hasAnimation);
+        log.info("User is mining: {}", hasAnimation);
 
         if (hasAnimation) {
             log.info("Player is currently mining");

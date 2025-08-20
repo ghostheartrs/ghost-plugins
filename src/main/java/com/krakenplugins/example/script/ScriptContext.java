@@ -16,4 +16,6 @@ public class ScriptContext {
     private TileObject targetRock = null;
     private long lastActionTime = 0;
     private final Random random = new Random();
+    private String status = "";
+    private String runtime = "";
 }

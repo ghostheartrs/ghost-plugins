@@ -12,6 +12,7 @@ import com.krakenplugins.example.script.conditions.IsMiningCondition;
 import com.krakenplugins.example.script.factory.RepeatNodeFactory;
 import com.krakenplugins.example.script.factory.SelectorNodeFactory;
 import com.krakenplugins.example.script.factory.SequenceNodeFactory;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,10 +28,8 @@ public class MiningScript extends BehaviorTreeScript {
 
     public static final int IRON_ORE_ID = 440;
     public static final List<Integer> IRON_ROCK_ID = List.of(11364, 11365);
-    public static final int IRON_ROCK_DEPLETED_ID = 11391;
     public static final WorldPoint MINING_AREA = new WorldPoint(3287, 3367, 0);
     public static final WorldPoint BANK_AREA = new WorldPoint(3253, 3420, 0); // Varrock East bank
-    public static final int MINING_AREA_RADIUS = 10;
     public static final int BANK_RADIUS = 3;
 
     private final InventoryFullCondition inventoryFullCondition;
@@ -48,9 +47,13 @@ public class MiningScript extends BehaviorTreeScript {
     private final SelectorNodeFactory selectorFactory;
     private final RepeatNodeFactory repeatFactory;
 
+    @Getter
+    private final ScriptContext scriptContext;
+
     @Inject
-    public MiningScript(Context context, InventoryFullCondition inventoryFullCondition, AtBankCondition atBankCondition, BankOreAction bankOreAction, WalkToBankAction walkToBankAction, InMiningAreaCondition inMiningAreaCondition, IsMiningCondition isMiningCondition, WaitAction waitAction, FindIronRockAction findIronRockAction, ClickRockAction clickRockAction, WalkToMiningAreaAction walkToMiningAreaAction, FallbackWaitAction fallbackWaitAction, SequenceNodeFactory sequenceFactory, SelectorNodeFactory selectorFactory, RepeatNodeFactory repeatFactory) {
+    public MiningScript(Context context, ScriptContext scriptContext, InventoryFullCondition inventoryFullCondition, AtBankCondition atBankCondition, BankOreAction bankOreAction, WalkToBankAction walkToBankAction, InMiningAreaCondition inMiningAreaCondition, IsMiningCondition isMiningCondition, WaitAction waitAction, FindIronRockAction findIronRockAction, ClickRockAction clickRockAction, WalkToMiningAreaAction walkToMiningAreaAction, FallbackWaitAction fallbackWaitAction, SequenceNodeFactory sequenceFactory, SelectorNodeFactory selectorFactory, RepeatNodeFactory repeatFactory) {
         super(context);
+        this.scriptContext = scriptContext;
         this.inventoryFullCondition = inventoryFullCondition;
         this.atBankCondition = atBankCondition;
         this.bankOreAction = bankOreAction;
