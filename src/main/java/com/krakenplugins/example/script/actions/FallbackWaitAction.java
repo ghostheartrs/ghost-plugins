@@ -29,15 +29,8 @@ public class FallbackWaitAction extends BaseScriptNode implements ActionNode {
 
     @Override
     public BehaviorResult performAction() {
-        log.debug("Fallback action - waiting and assessing situation");
-
-        // Log current state for debugging
-        WorldPoint playerLoc = client.getLocalPlayer().getWorldLocation();
-        log.debug("Player location: {}", playerLoc);
-        log.debug("Distance to mining area: {}", playerLoc.distanceTo(MINING_AREA));
-        log.debug("Distance to bank: {}", playerLoc.distanceTo(BANK_AREA));
-
-        sleepService.sleep(1000, 2000);
+        context.setStatus("Waiting... (fallback)");
+        sleepService.sleep(100, 200);
         return BehaviorResult.SUCCESS;
     }
 }

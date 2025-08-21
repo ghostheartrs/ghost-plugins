@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import com.kraken.api.core.script.node.ConditionNode;
 import com.krakenplugins.example.script.BaseScriptNode;
 import com.krakenplugins.example.script.ScriptContext;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
@@ -20,6 +19,7 @@ public class IsMiningCondition extends BaseScriptNode implements ConditionNode {
 
     @Override
     public boolean checkCondition() {
+        context.setStatus("Checking if user is mining.");
         Player localPlayer = client.getLocalPlayer();
         if (localPlayer == null) return false;
 
@@ -32,8 +32,6 @@ public class IsMiningCondition extends BaseScriptNode implements ConditionNode {
                 localPlayer.getAnimation() == AnimationID.MINING_DRAGON_PICKAXE;
 
         context.setMining(hasAnimation);
-        log.info("User is mining: {}", hasAnimation);
-
         if (hasAnimation) {
             log.info("Player is currently mining");
         }

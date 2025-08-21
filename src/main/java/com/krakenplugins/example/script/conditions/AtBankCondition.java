@@ -21,6 +21,7 @@ public class AtBankCondition extends BaseScriptNode implements ConditionNode {
 
     @Override
     public boolean checkCondition() {
+        context.setStatus("Checking if at Bank");
         WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
         boolean atBank = playerLocation.distanceTo(BANK_AREA) <= BANK_RADIUS;
         log.info("Checking if player is at bank: {}, distance away: {}", atBank, playerLocation.distanceTo(BANK_AREA));

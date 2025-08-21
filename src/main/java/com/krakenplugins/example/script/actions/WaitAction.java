@@ -21,8 +21,8 @@ public class WaitAction extends BaseScriptNode implements ActionNode {
 
     @Override
     public BehaviorResult performAction() {
-        log.debug("Waiting for 1000 ms");
-        sleepService.sleep(1000);
+        context.setStatus("Waiting...");
+        sleepService.sleep(100, 500);
         return BehaviorResult.SUCCESS;
     }
 }

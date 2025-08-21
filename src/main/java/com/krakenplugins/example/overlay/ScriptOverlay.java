@@ -32,8 +32,8 @@ public class ScriptOverlay extends OverlayPanel {
                     .build());
             panelComponent.getChildren().add(TitleComponent.builder().text("").build());
             addTextLine("Status: " + miningScript.getScriptContext().getStatus());
-            addTextLine("Runtime: " + miningScript.getRuntime());
-            addTextLine("Ore Mined: " + "0"); // TODO
+            addTextLine("Runtime: " + miningScript.getRuntimeString());
+            addTextLine("Ore Mined: " + "0"); // TODO Add this
         return super.render(graphics);
     }
 

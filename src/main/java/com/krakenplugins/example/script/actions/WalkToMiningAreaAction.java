@@ -28,6 +28,7 @@ public class WalkToMiningAreaAction extends BaseScriptNode implements ActionNode
 
     @Override
     public BehaviorResult performAction() {
+        context.setStatus("Walking to Mine...");
         if(movementService.getCurrentState() == MovementState.ARRIVED || playerService.isInArea(MINING_AREA)) {
             return BehaviorResult.SUCCESS;
         }

@@ -3,6 +3,7 @@ package com.krakenplugins.example.script.actions;
 import com.google.inject.Inject;
 import com.kraken.api.core.script.BehaviorResult;
 import com.kraken.api.core.script.node.ActionNode;
+import com.kraken.api.interaction.gameobject.GameObjectService;
 import com.krakenplugins.example.script.BaseScriptNode;
 import com.krakenplugins.example.script.ScriptContext;
 import com.krakenplugins.example.script.Util;
@@ -18,14 +19,18 @@ import static com.krakenplugins.example.script.MiningScript.IRON_ROCK_ID;
 @Slf4j
 public class FindIronRockAction extends BaseScriptNode implements ActionNode {
 
+    private final GameObjectService gameObjectService;
+
     @Inject
-    public FindIronRockAction(Client client, ScriptContext context) {
+    public FindIronRockAction(Client client, ScriptContext context, GameObjectService gameObjectService) {
         super(client, context);
+        this.gameObjectService = gameObjectService;
     }
 
     @Override
     public BehaviorResult performAction() {
-        List<TileObject> ironRocks = Util.findAllGameObjects(IRON_ROCK_ID);
+        context.setStatus("Locating iron ore rocks");
+        List<TileObject> ironRocks = gameObjectService.getAll((o) -> IRON_ROCK_ID.contains(o.getId()), 5);
 
         if (ironRocks.isEmpty()) {
             log.debug("No iron rocks found in area");

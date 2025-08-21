@@ -11,9 +11,6 @@ import com.krakenplugins.example.script.Util;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 
-import static com.krakenplugins.example.script.Util.getRandomDelay;
-import static com.krakenplugins.example.script.Util.interactWithObject;
-
 @Slf4j
 public class ClickRockAction extends BaseScriptNode implements ActionNode {
 
@@ -31,16 +28,14 @@ public class ClickRockAction extends BaseScriptNode implements ActionNode {
 
     @Override
     public BehaviorResult performAction() {
+        context.setStatus("Clicking Rock");
         if (context.getTargetRock() == null) {
             log.warn("No target rock selected");
             return BehaviorResult.FAILURE;
         }
 
-        log.info("Clicking iron rock at X={}, Y={}", context.getTargetRock().getWorldLocation().getX(), context.getTargetRock().getWorldLocation().getY());
-
         if (gameObjectService.interact(context.getTargetRock(), "Mine")) {
             context.setLastActionTime(System.currentTimeMillis());
-            // Wait a moment to let the action register
             sleepService.sleep(300, 600);
             return BehaviorResult.SUCCESS;
         } else {

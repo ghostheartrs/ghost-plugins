@@ -33,25 +33,26 @@ public class BankOreAction extends BaseScriptNode implements ActionNode {
 
     @Override
     public BehaviorResult performAction() {
+        context.setStatus("Banking Ore");
         try {
             // Find bank booth or banker
             TileObject bankBooth = gameObjectService.getAll((o) -> o.getId() == 10583, 10).stream().findFirst().orElse(null);
             if (bankBooth != null) {
                 log.info("Opening bank booth");
                 gameObjectService.interact(bankBooth, "Bank");
-                Util.sleep(getRandomDelay(1500, 2500));
+                sleepService.sleep(600, 1800);
 
                 // Deposit all iron ore
                 if(bankService.isOpen()) {
                     bankService.depositAll(IRON_ORE_ID);
                 }
+
                 sleepService.sleep(600, 1200);
 
                 if(bankService.closeBank()) {
                     log.info("Bank closed successfully");
                     return BehaviorResult.SUCCESS;
                 } else {
-                    log.warn("Failed to close bank");
                     return BehaviorResult.FAILURE;
                 }
             } else {

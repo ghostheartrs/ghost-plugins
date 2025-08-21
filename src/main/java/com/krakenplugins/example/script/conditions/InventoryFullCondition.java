@@ -8,8 +8,6 @@ import com.krakenplugins.example.script.MiningScript;
 import com.krakenplugins.example.script.ScriptContext;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.ItemContainer;
 
 @Slf4j
 public class InventoryFullCondition extends BaseScriptNode implements ConditionNode {
@@ -24,15 +22,10 @@ public class InventoryFullCondition extends BaseScriptNode implements ConditionN
 
     @Override
     public boolean checkCondition() {
+        context.setStatus("Checking inventory");
         boolean isFull = (long) inventoryService.all().size() == 28;
         boolean hasIron = inventoryService.all().stream().anyMatch(item -> item.getId() == MiningScript.IRON_ORE_ID);
-
-        log.info("Inventory full: {}, have iron: {}", isFull, hasIron);
-
-        if (isFull && hasIron) {
-            log.info("Inventory is full, and we have iron need to bank");
-        }
-
+        log.info("Inventory full: {}, size: {}, have iron: {}", isFull, hasIron, inventoryService.all().size());
         return isFull && hasIron;
     }
 }
