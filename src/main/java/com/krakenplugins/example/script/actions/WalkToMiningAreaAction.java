@@ -34,7 +34,9 @@ public class WalkToMiningAreaAction extends BaseScriptNode implements ActionNode
         }
 
         // Continue executing the movement towards the destination if we have started the path and we aren't currently moving
-        if(movementService.getCurrentState() == MovementState.WALKING && !playerService.isMoving()) {
+        log.info("Distance to next waypoint: {}", movementService.getMovementStats().getDistanceToNextWaypoint());
+        boolean isWalking = movementService.getCurrentState() == MovementState.WALKING;
+        if((isWalking && movementService.getMovementStats().getDistanceToNextWaypoint() < 5) || (!playerService.isMoving() && isWalking)) {
             movementService.walkTo(MINING_AREA);
             return BehaviorResult.RUNNING;
         }

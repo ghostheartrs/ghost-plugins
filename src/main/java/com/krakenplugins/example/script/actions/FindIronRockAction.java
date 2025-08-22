@@ -30,16 +30,10 @@ public class FindIronRockAction extends BaseScriptNode implements ActionNode {
     @Override
     public BehaviorResult performAction() {
         context.setStatus("Locating iron ore rocks");
-        List<TileObject> ironRocks = gameObjectService.getAll((o) -> IRON_ROCK_ID.contains(o.getId()), 5);
-
-        if (ironRocks.isEmpty()) {
-            log.debug("No iron rocks found in area");
-            return BehaviorResult.FAILURE;
-        }
-
         // Filter rocks that are not depleted and are reachable
-        List<TileObject> availableRocks = ironRocks.stream()
-                .filter(this::isRockAvailable)
+        List<TileObject> availableRocks = gameObjectService.getAll((o) -> IRON_ROCK_ID.contains(o.getId()), 5)
+                .stream()
+                .sorted((a, b) -> a.getLocalLocation().distanceTo(client.getLocalPlayer().getLocalLocation()) - b.getLocalLocation().distanceTo(client.getLocalPlayer().getLocalLocation()))
                 .collect(Collectors.toList());
 
         if (availableRocks.isEmpty()) {
@@ -47,16 +41,8 @@ public class FindIronRockAction extends BaseScriptNode implements ActionNode {
             return BehaviorResult.FAILURE;
         }
 
-        // Select random available rock
-        context.setTargetRock(availableRocks.get(context.getRandom().nextInt(availableRocks.size())));
-        log.debug("Selected iron rock at {}", context.getTargetRock().getWorldLocation());
-
+        // Select a rock that is closest to the player
+        context.setTargetRock(availableRocks.get(0));
         return BehaviorResult.SUCCESS;
-    }
-
-    private boolean isRockAvailable(TileObject rock) {
-        // Check if rock is not depleted (has the correct ID)
-        return true;
-        //return rock.getId() == IRON_ROCK_ID;
     }
 }

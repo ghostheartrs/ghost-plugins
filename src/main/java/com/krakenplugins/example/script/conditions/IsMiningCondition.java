@@ -19,7 +19,7 @@ public class IsMiningCondition extends BaseScriptNode implements ConditionNode {
 
     @Override
     public boolean checkCondition() {
-        context.setStatus("Checking if user is mining.");
+        context.setStatus("Checking if mining...");
         Player localPlayer = client.getLocalPlayer();
         if (localPlayer == null) return false;
 
@@ -32,10 +32,6 @@ public class IsMiningCondition extends BaseScriptNode implements ConditionNode {
                 localPlayer.getAnimation() == AnimationID.MINING_DRAGON_PICKAXE;
 
         context.setMining(hasAnimation);
-        if (hasAnimation) {
-            log.info("Player is currently mining");
-        }
-
         return hasAnimation;
     }
 }

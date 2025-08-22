@@ -6,7 +6,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 
-@ConfigGroup("exampleplugin")
+@ConfigGroup("autominer")
 public interface MiningConfig extends Config {
 
 	@ConfigSection(
@@ -17,13 +17,13 @@ public interface MiningConfig extends Config {
 	String general = "General";
 
 	@ConfigItem(
-		keyName = "key",
-		name = "Configures Something",
-		description = "Configures something in the plugin.",
+		keyName = "highlightTargetRock",
+		name = "Highlight Target Rock",
+		description = "Highlights the selected rock to mine.",
 		position = 1,
 		section = general
 	)
-	default boolean doSomething() {
+	default boolean highlightTargetRock() {
 		return false;
 	}
 }

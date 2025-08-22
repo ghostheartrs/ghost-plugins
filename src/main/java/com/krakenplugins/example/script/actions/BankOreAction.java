@@ -7,14 +7,12 @@ import com.kraken.api.interaction.bank.BankService;
 import com.kraken.api.interaction.gameobject.GameObjectService;
 import com.krakenplugins.example.script.BaseScriptNode;
 import com.krakenplugins.example.script.ScriptContext;
-import com.krakenplugins.example.script.Util;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 
 import javax.inject.Inject;
 
 import static com.krakenplugins.example.script.MiningScript.IRON_ORE_ID;
-import static com.krakenplugins.example.script.Util.*;
 
 @Slf4j
 public class BankOreAction extends BaseScriptNode implements ActionNode {
@@ -45,6 +43,7 @@ public class BankOreAction extends BaseScriptNode implements ActionNode {
                 // Deposit all iron ore
                 if(bankService.isOpen()) {
                     bankService.depositAll(IRON_ORE_ID);
+                    // TODO also deposit gems
                 }
 
                 sleepService.sleep(600, 1200);

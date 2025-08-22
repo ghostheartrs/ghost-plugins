@@ -25,7 +25,6 @@ public class InventoryFullCondition extends BaseScriptNode implements ConditionN
         context.setStatus("Checking inventory");
         boolean isFull = (long) inventoryService.all().size() == 28;
         boolean hasIron = inventoryService.all().stream().anyMatch(item -> item.getId() == MiningScript.IRON_ORE_ID);
-        log.info("Inventory full: {}, size: {}, have iron: {}", isFull, hasIron, inventoryService.all().size());
         return isFull && hasIron;
     }
 }

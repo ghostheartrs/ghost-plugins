@@ -4,8 +4,10 @@ import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import com.kraken.api.overlay.MouseTrackerOverlay;
 import com.kraken.api.overlay.MovementOverlay;
 import com.krakenplugins.example.overlay.ScriptOverlay;
+import com.krakenplugins.example.overlay.TargetRockOverlay;
 import com.krakenplugins.example.script.MiningModule;
 import com.krakenplugins.example.script.MiningScript;
 import lombok.Getter;
@@ -15,11 +17,11 @@ import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.OverlayManager;
-import shortestpath.ShortestPathConfig;
 
 @Slf4j
 @Singleton
@@ -49,6 +51,12 @@ public class MiningPlugin extends Plugin {
     private ScriptOverlay scriptOverlay;
 
     @Inject
+    private MouseTrackerOverlay mouseTrackerOverlay;
+
+    @Inject
+    private TargetRockOverlay targetRockOverlay;
+
+    @Inject
     private MiningScript miningScript;
 
     @Provides
@@ -65,6 +73,9 @@ public class MiningPlugin extends Plugin {
     protected void startUp() {
         overlayManager.add(movementOverlay);
         overlayManager.add(scriptOverlay);
+        overlayManager.add(mouseTrackerOverlay);
+        overlayManager.add(targetRockOverlay);
+
         if (client.getGameState() == GameState.LOGGED_IN) {
             log.info("Starting Mining Plugin...");
             miningScript.start();
@@ -75,6 +86,8 @@ public class MiningPlugin extends Plugin {
     protected void shutDown() {
         overlayManager.remove(movementOverlay);
         overlayManager.remove(scriptOverlay);
+        overlayManager.remove(mouseTrackerOverlay);
+        overlayManager.remove(targetRockOverlay);
         if(miningScript.isRunning()) {
             log.info("Shutting down Mining Plugin...");
             miningScript.stop();

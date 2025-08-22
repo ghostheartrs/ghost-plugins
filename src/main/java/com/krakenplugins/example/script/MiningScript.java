@@ -1,6 +1,7 @@
 package com.krakenplugins.example.script;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.kraken.api.Context;
 import com.kraken.api.core.script.BehaviorNode;
 import com.kraken.api.core.script.BehaviorTreeScript;
@@ -13,10 +14,8 @@ import com.krakenplugins.example.script.factory.RepeatNodeFactory;
 import com.krakenplugins.example.script.factory.SelectorNodeFactory;
 import com.krakenplugins.example.script.factory.SequenceNodeFactory;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 
 import java.util.List;
@@ -24,6 +23,7 @@ import java.util.List;
 import static com.krakenplugins.example.script.Util.getRandomDelay;
 
 @Slf4j
+@Singleton
 public class MiningScript extends BehaviorTreeScript {
 
     public static final int IRON_ORE_ID = 440;

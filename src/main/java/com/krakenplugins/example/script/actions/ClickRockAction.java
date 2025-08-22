@@ -7,7 +7,6 @@ import com.kraken.api.core.script.node.ActionNode;
 import com.kraken.api.interaction.gameobject.GameObjectService;
 import com.krakenplugins.example.script.BaseScriptNode;
 import com.krakenplugins.example.script.ScriptContext;
-import com.krakenplugins.example.script.Util;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 
@@ -36,7 +35,7 @@ public class ClickRockAction extends BaseScriptNode implements ActionNode {
 
         if (gameObjectService.interact(context.getTargetRock(), "Mine")) {
             context.setLastActionTime(System.currentTimeMillis());
-            sleepService.sleep(300, 600);
+            sleepService.sleep(800, 1200);
             return BehaviorResult.SUCCESS;
         } else {
             log.warn("Failed to click iron rock");

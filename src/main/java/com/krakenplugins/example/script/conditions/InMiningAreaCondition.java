@@ -24,7 +24,6 @@ public class InMiningAreaCondition extends BaseScriptNode implements ConditionNo
     @Override
     public boolean checkCondition() {
         context.setStatus("Checking if user in mining area");
-        log.info("User is mining area: {}", playerService.isInArea(MINING_AREA));
         return playerService.isInArea(MINING_AREA);
     }
 }
