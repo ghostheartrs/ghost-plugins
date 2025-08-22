@@ -9,6 +9,8 @@ import com.krakenplugins.example.script.ScriptContext;
 import com.krakenplugins.example.script.Util;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.GameObject;
+import net.runelite.api.ObjectComposition;
 import net.runelite.api.TileObject;
 
 import java.util.List;
@@ -30,19 +32,18 @@ public class FindIronRockAction extends BaseScriptNode implements ActionNode {
     @Override
     public BehaviorResult performAction() {
         context.setStatus("Locating iron ore rocks");
-        // Filter rocks that are not depleted and are reachable
-        List<TileObject> availableRocks = gameObjectService.getAll((o) -> IRON_ROCK_ID.contains(o.getId()), 5)
-                .stream()
-                .sorted((a, b) -> a.getLocalLocation().distanceTo(client.getLocalPlayer().getLocalLocation()) - b.getLocalLocation().distanceTo(client.getLocalPlayer().getLocalLocation()))
-                .collect(Collectors.toList());
+        GameObject nearestRock = gameObjectService.findReachableObject("Iron rocks", true, 5, client.getLocalPlayer().getWorldLocation(), true, "Mine");
 
-        if (availableRocks.isEmpty()) {
-            log.debug("No available iron rocks found, waiting for respawn");
+        if (nearestRock == null) {
+            log.info("No available iron rocks found, waiting for respawn");
             return BehaviorResult.FAILURE;
         }
 
+        ObjectComposition comp = gameObjectService.convertToObjectComposition(nearestRock);
+        log.info("Found rock actions: {}, name = {}", comp.getActions(), comp.getName());
+
         // Select a rock that is closest to the player
-        context.setTargetRock(availableRocks.get(0));
+        context.setTargetRock(nearestRock);
         return BehaviorResult.SUCCESS;
     }
 }

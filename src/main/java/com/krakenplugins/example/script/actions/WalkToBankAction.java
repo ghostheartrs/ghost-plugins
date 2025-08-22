@@ -29,18 +29,21 @@ public class WalkToBankAction extends BaseScriptNode implements ActionNode {
 
     @Override
     public BehaviorResult performAction() {
-        context.setStatus("Walking to Bank...");
         if(context.getTargetRock() != null) {
             context.setTargetRock(null);
         }
 
+        if(playerService.isInArea(BANK_AREA)) {
+            movementService.resetPath();
+            return BehaviorResult.SUCCESS;
+        }
 
-        if(movementService.getCurrentState() == MovementState.ARRIVED || playerService.isInArea(BANK_AREA)) {
+        if(movementService.getCurrentState() == MovementState.ARRIVED) {
+            movementService.resetPath();
             return BehaviorResult.SUCCESS;
         }
 
         boolean isWalking = movementService.getCurrentState() == MovementState.WALKING;
-        log.info("Distance to next waypoint: {}", movementService.getMovementStats().getDistanceToNextWaypoint());
         if((isWalking && movementService.getMovementStats().getDistanceToNextWaypoint() < 5) || (!playerService.isMoving() && isWalking)) {
             movementService.walkTo(BANK_AREA);
             return BehaviorResult.RUNNING;

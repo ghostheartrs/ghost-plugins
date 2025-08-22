@@ -27,10 +27,9 @@ public class InMiningAreaCondition extends BaseScriptNode implements ConditionNo
 
     @Override
     public boolean checkCondition() {
-        context.setStatus("Checking if user in mining area");
         // Before we even check for target rocks we need to both:
         // - be in the mining area
         // - Not have a full inventory
-        return playerService.isInArea(MINING_AREA) && inventoryService.all().size() != 28;
+        return playerService.isInArea(MINING_AREA) && inventoryService.all().size() < 28;
     }
 }

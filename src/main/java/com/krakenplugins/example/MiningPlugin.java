@@ -10,6 +10,7 @@ import com.krakenplugins.example.overlay.ScriptOverlay;
 import com.krakenplugins.example.overlay.TargetRockOverlay;
 import com.krakenplugins.example.script.MiningModule;
 import com.krakenplugins.example.script.MiningScript;
+import com.krakenplugins.example.script.actions.ClickRockAction;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -18,6 +19,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -40,6 +42,9 @@ public class MiningPlugin extends Plugin {
     @Getter
     @Inject
     private ClientThread clientThread;
+
+    @Inject
+    private EventBus eventBus;
 
     @Inject
     private OverlayManager overlayManager;
@@ -72,6 +77,9 @@ public class MiningPlugin extends Plugin {
 
     @Override
     protected void startUp() {
+        // This action subscribes to runelite events and thus must be registered with the event bus.
+        eventBus.register(ClickRockAction.class);
+
         overlayManager.add(movementOverlay);
         overlayManager.add(scriptOverlay);
         overlayManager.add(mouseTrackerOverlay);
