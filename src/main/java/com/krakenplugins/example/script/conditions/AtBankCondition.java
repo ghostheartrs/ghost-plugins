@@ -32,7 +32,7 @@ public class AtBankCondition extends BaseScriptNode implements ConditionNode {
         if (atBank) {
             log.info("Player is at bank location");
         } else {
-            log.info("Player is not at bank location distance away: {}", playerLocation.distanceTo(BANK_AREA) <= BANK_RADIUS);
+            log.info("Player is not at bank location distance away: {}", playerLocation.distanceTo(BANK_AREA));
         }
 
         return atBank;

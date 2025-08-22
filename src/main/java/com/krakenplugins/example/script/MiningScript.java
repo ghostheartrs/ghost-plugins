@@ -38,7 +38,6 @@ public class MiningScript extends BehaviorTreeScript {
     private final InMiningAreaCondition inMiningAreaCondition;
     private final IsMiningCondition isMiningCondition;
     private final WaitAction waitAction;
-    private final FindIronRockAction findIronRockAction;
     private final ClickRockAction clickRockAction;
     private final WalkToMiningAreaAction walkToMiningAreaAction;
     private final FallbackWaitAction fallbackWaitAction;
@@ -50,7 +49,9 @@ public class MiningScript extends BehaviorTreeScript {
     private final ScriptContext scriptContext;
 
     @Inject
-    public MiningScript(Context context, ScriptContext scriptContext, InventoryFullCondition inventoryFullCondition, AtBankCondition atBankCondition, BankOreAction bankOreAction, WalkToBankAction walkToBankAction, InMiningAreaCondition inMiningAreaCondition, IsMiningCondition isMiningCondition, WaitAction waitAction, FindIronRockAction findIronRockAction, ClickRockAction clickRockAction, WalkToMiningAreaAction walkToMiningAreaAction, FallbackWaitAction fallbackWaitAction, SequenceNodeFactory sequenceFactory, SelectorNodeFactory selectorFactory, RepeatNodeFactory repeatFactory) {
+    public MiningScript(Context context, ScriptContext scriptContext, InventoryFullCondition inventoryFullCondition, AtBankCondition atBankCondition, BankOreAction bankOreAction, WalkToBankAction walkToBankAction, InMiningAreaCondition inMiningAreaCondition, IsMiningCondition isMiningCondition, WaitAction waitAction,
+                        ClickRockAction clickRockAction, WalkToMiningAreaAction walkToMiningAreaAction, FallbackWaitAction fallbackWaitAction,
+                        SequenceNodeFactory sequenceFactory, SelectorNodeFactory selectorFactory, RepeatNodeFactory repeatFactory) {
         super(context);
         this.scriptContext = scriptContext;
         this.inventoryFullCondition = inventoryFullCondition;
@@ -60,7 +61,6 @@ public class MiningScript extends BehaviorTreeScript {
         this.inMiningAreaCondition = inMiningAreaCondition;
         this.isMiningCondition = isMiningCondition;
         this.waitAction = waitAction;
-        this.findIronRockAction = findIronRockAction;
         this.clickRockAction = clickRockAction;
         this.walkToMiningAreaAction = walkToMiningAreaAction;
         this.fallbackWaitAction = fallbackWaitAction;
@@ -93,7 +93,6 @@ public class MiningScript extends BehaviorTreeScript {
                                         waitAction
                                 )),
                                 sequenceFactory.create(List.of(
-                                        findIronRockAction,
                                         clickRockAction
                                 ))
                         ))

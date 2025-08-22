@@ -3,20 +3,25 @@ package com.krakenplugins.example.script;
 import com.google.inject.Singleton;
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.api.AnimationID;
+import net.runelite.api.Player;
 import net.runelite.api.TileObject;
-
-import java.util.Random;
 
 @Getter
 @Setter
 @Singleton
 public class ScriptContext {
-    private boolean isMining = false;
-    private boolean isWalking = false;
     private TileObject targetRock = null;
     private int oreMined = 0;
-    private long lastActionTime = 0;
-    private final Random random = new Random();
     private String status = "";
     private String runtime = "";
+    
+    public boolean isPlayerMining(Player player) {
+        return player.getAnimation() == AnimationID.MINING_IRON_PICKAXE ||
+                player.getAnimation() == AnimationID.MINING_STEEL_PICKAXE ||
+                player.getAnimation() == AnimationID.MINING_MITHRIL_PICKAXE ||
+                player.getAnimation() == AnimationID.MINING_ADAMANT_PICKAXE ||
+                player.getAnimation() == AnimationID.MINING_RUNE_PICKAXE ||
+                player.getAnimation() == AnimationID.MINING_DRAGON_PICKAXE;
+    }
 }

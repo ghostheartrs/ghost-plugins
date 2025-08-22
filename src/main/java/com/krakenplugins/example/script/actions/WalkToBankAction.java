@@ -50,7 +50,6 @@ public class WalkToBankAction extends BaseScriptNode implements ActionNode {
         }
 
         if(movementService.walkTo(BANK_AREA)) {
-            context.setWalking(true);
             return BehaviorResult.RUNNING;
         } else {
             return BehaviorResult.FAILURE;

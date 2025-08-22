@@ -22,16 +22,6 @@ public class IsMiningCondition extends BaseScriptNode implements ConditionNode {
         context.setStatus("Checking if mining...");
         Player localPlayer = client.getLocalPlayer();
         if (localPlayer == null) return false;
-
-        // Check if player has mining animation
-        boolean hasAnimation = localPlayer.getAnimation() == AnimationID.MINING_IRON_PICKAXE ||
-                localPlayer.getAnimation() == AnimationID.MINING_STEEL_PICKAXE ||
-                localPlayer.getAnimation() == AnimationID.MINING_MITHRIL_PICKAXE ||
-                localPlayer.getAnimation() == AnimationID.MINING_ADAMANT_PICKAXE ||
-                localPlayer.getAnimation() == AnimationID.MINING_RUNE_PICKAXE ||
-                localPlayer.getAnimation() == AnimationID.MINING_DRAGON_PICKAXE;
-
-        context.setMining(hasAnimation);
-        return hasAnimation;
+        return context.isPlayerMining(localPlayer);
     }
 }

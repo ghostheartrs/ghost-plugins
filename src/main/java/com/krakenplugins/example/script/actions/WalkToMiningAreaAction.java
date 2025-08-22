@@ -39,6 +39,7 @@ public class WalkToMiningAreaAction extends BaseScriptNode implements ActionNode
 
         context.setStatus("Walking to Mine...");
         if(movementService.getCurrentState() == MovementState.ARRIVED || playerService.isInArea(MINING_AREA)) {
+            movementService.resetPath();
             return BehaviorResult.SUCCESS;
         }
 
@@ -49,9 +50,7 @@ public class WalkToMiningAreaAction extends BaseScriptNode implements ActionNode
             return BehaviorResult.RUNNING;
         }
 
-        log.info("Initial walk to mining area at X={}, Y={}", MINING_AREA.getX(), MINING_AREA.getY());
         if(movementService.walkTo(MINING_AREA)) {
-            context.setWalking(true);
             return BehaviorResult.RUNNING;
         } else {
             return BehaviorResult.FAILURE;
