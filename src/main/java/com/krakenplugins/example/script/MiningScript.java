@@ -30,7 +30,7 @@ public class MiningScript extends BehaviorTreeScript {
     public static final List<Integer> IRON_ROCK_ID = List.of(11364, 11365);
     public static final WorldPoint MINING_AREA = new WorldPoint(3287, 3367, 0);
     public static final WorldPoint BANK_AREA = new WorldPoint(3253, 3420, 0); // Varrock East bank
-    public static final int BANK_RADIUS = 3;
+    public static final int BANK_RADIUS = 10;
 
     private final InventoryFullCondition inventoryFullCondition;
     private final AtBankCondition atBankCondition;

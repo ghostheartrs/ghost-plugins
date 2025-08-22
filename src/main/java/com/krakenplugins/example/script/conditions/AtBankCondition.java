@@ -22,6 +22,9 @@ public class AtBankCondition extends BaseScriptNode implements ConditionNode {
     @Override
     public boolean checkCondition() {
         context.setStatus("Checking if at Bank");
+        // TODO Problem here where we are almost at the bank, we do our final walk to the bank and pathing stop but we haven't made it inside the bank yet
+        // so then it goes back and re-calculates a new path as the player is approaching the bank. This could potentially upset the next path that needs calculated.
+        // Best solution is ensuring that once we have the condition to path to an area we don't go back to that condition for a while so make it stricter.
         WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
         boolean atBank = playerLocation.distanceTo(BANK_AREA) <= BANK_RADIUS;
 
