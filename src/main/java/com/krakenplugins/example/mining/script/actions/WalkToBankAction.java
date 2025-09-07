@@ -1,4 +1,4 @@
-package com.krakenplugins.example.script.actions;
+package com.krakenplugins.example.mining.script.actions;
 
 import com.google.inject.Inject;
 import com.kraken.api.core.script.BehaviorResult;
@@ -7,12 +7,12 @@ import com.kraken.api.interaction.movement.MovementService;
 import com.kraken.api.interaction.movement.MovementState;
 import com.kraken.api.interaction.movement.ShortestPathService;
 import com.kraken.api.interaction.player.PlayerService;
-import com.krakenplugins.example.script.BaseScriptNode;
-import com.krakenplugins.example.script.ScriptContext;
+import com.krakenplugins.example.mining.script.BaseScriptNode;
+import com.krakenplugins.example.mining.script.ScriptContext;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 
-import static com.krakenplugins.example.script.MiningScript.BANK_AREA;
+import static com.krakenplugins.example.mining.script.MiningScript.BANK_AREA;
 
 @Slf4j
 public class WalkToBankAction extends BaseScriptNode implements ActionNode {

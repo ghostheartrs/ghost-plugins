@@ -1,4 +1,4 @@
-package com.krakenplugins.example.script.factory;
+package com.krakenplugins.example.mining.script.factory;
 
 import com.google.inject.Inject;
 import com.kraken.api.core.script.BehaviorNode;

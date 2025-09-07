@@ -1,4 +1,4 @@
-package com.krakenplugins.example;
+package com.krakenplugins.example.mining;
 
 import com.google.inject.Binder;
 import com.google.inject.Inject;
@@ -6,11 +6,11 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.kraken.api.overlay.MouseTrackerOverlay;
 import com.kraken.api.overlay.MovementOverlay;
-import com.krakenplugins.example.overlay.ScriptOverlay;
-import com.krakenplugins.example.overlay.TargetRockOverlay;
-import com.krakenplugins.example.script.MiningModule;
-import com.krakenplugins.example.script.MiningScript;
-import com.krakenplugins.example.script.actions.ClickRockAction;
+import com.krakenplugins.example.mining.overlay.ScriptOverlay;
+import com.krakenplugins.example.mining.overlay.TargetRockOverlay;
+import com.krakenplugins.example.mining.script.MiningModule;
+import com.krakenplugins.example.mining.script.MiningScript;
+import com.krakenplugins.example.mining.script.actions.ClickRockAction;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;

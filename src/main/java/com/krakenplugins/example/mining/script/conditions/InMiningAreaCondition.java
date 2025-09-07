@@ -1,16 +1,15 @@
-package com.krakenplugins.example.script.conditions;
+package com.krakenplugins.example.mining.script.conditions;
 
 import com.google.inject.Inject;
 import com.kraken.api.core.script.node.ConditionNode;
 import com.kraken.api.interaction.inventory.InventoryService;
 import com.kraken.api.interaction.player.PlayerService;
-import com.krakenplugins.example.script.BaseScriptNode;
-import com.krakenplugins.example.script.MiningScript;
-import com.krakenplugins.example.script.ScriptContext;
+import com.krakenplugins.example.mining.script.BaseScriptNode;
+import com.krakenplugins.example.mining.script.ScriptContext;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 
-import static com.krakenplugins.example.script.MiningScript.MINING_AREA;
+import static com.krakenplugins.example.mining.script.MiningScript.MINING_AREA;
 
 @Slf4j
 public class InMiningAreaCondition extends BaseScriptNode implements ConditionNode {

@@ -1,5 +1,5 @@
 
-package com.krakenplugins.example;
+package com.krakenplugins.example.mining;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;

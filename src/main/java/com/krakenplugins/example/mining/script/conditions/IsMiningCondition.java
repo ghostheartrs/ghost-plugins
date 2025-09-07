@@ -1,11 +1,10 @@
-package com.krakenplugins.example.script.conditions;
+package com.krakenplugins.example.mining.script.conditions;
 
 import com.google.inject.Inject;
 import com.kraken.api.core.script.node.ConditionNode;
-import com.krakenplugins.example.script.BaseScriptNode;
-import com.krakenplugins.example.script.ScriptContext;
+import com.krakenplugins.example.mining.script.BaseScriptNode;
+import com.krakenplugins.example.mining.script.ScriptContext;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 

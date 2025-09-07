@@ -1,4 +1,4 @@
-package com.krakenplugins.example.script;
+package com.krakenplugins.example.mining.script;
 
 import com.google.inject.Singleton;
 import lombok.Getter;

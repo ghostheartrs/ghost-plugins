@@ -1,4 +1,4 @@
-package com.krakenplugins.example.script.actions;
+package com.krakenplugins.example.mining.script.actions;
 
 import com.google.inject.Inject;
 import com.kraken.api.core.RandomService;
@@ -9,8 +9,8 @@ import com.kraken.api.interaction.gameobject.GameObjectService;
 import com.kraken.api.interaction.inventory.InventoryChanged;
 import com.kraken.api.interaction.inventory.InventoryService;
 import com.kraken.api.interaction.inventory.InventoryUpdateType;
-import com.krakenplugins.example.script.BaseScriptNode;
-import com.krakenplugins.example.script.ScriptContext;
+import com.krakenplugins.example.mining.script.BaseScriptNode;
+import com.krakenplugins.example.mining.script.ScriptContext;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
