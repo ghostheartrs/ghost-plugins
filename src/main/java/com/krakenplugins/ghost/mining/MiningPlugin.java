@@ -1,4 +1,4 @@
-package com.krakenplugins.example.mining;
+package com.krakenplugins.ghost.mining;
 
 import com.google.inject.Binder;
 import com.google.inject.Inject;
@@ -6,11 +6,12 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.kraken.api.overlay.MouseTrackerOverlay;
 import com.kraken.api.overlay.MovementOverlay;
-import com.krakenplugins.example.mining.overlay.ScriptOverlay;
-import com.krakenplugins.example.mining.overlay.TargetRockOverlay;
-import com.krakenplugins.example.mining.script.MiningModule;
-import com.krakenplugins.example.mining.script.MiningScript;
-import com.krakenplugins.example.mining.script.actions.ClickRockAction;
+import com.krakenplugins.ghost.mining.overlay.ScriptOverlay;
+import com.krakenplugins.ghost.mining.overlay.TargetRockOverlay;
+import com.krakenplugins.ghost.mining.script.MiningModule;
+import com.krakenplugins.ghost.mining.script.MiningScript;
+import com.krakenplugins.ghost.mining.script.actions.ClickRockAction;
+import com.krakenplugins.ghostloader.IManagedPlugin;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -20,11 +21,12 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.OverlayManager;
+
+import javax.swing.JPanel;
 
 @Slf4j
 @Singleton
@@ -32,9 +34,10 @@ import net.runelite.client.ui.overlay.OverlayManager;
         name = "Mining Plugin",
         enabledByDefault = false,
         description = "Demonstrates an example of building a Mining automation plugin using the Kraken API.",
-        tags = {"example", "automation", "kraken"}
+        tags = {"example", "automation", "kraken"},
+        hidden = true // This will hide it from the default plugin list
 )
-public class MiningPlugin extends Plugin {
+public class MiningPlugin extends Plugin implements IManagedPlugin {
 
     @Inject
     private Client client;
@@ -116,13 +119,45 @@ public class MiningPlugin extends Plugin {
 
         switch (gameState) {
             case LOGGED_IN:
-                startUp();
+                if (!miningScript.isRunning()) {
+                    onEnable();
+                }
                 break;
             case HOPPING:
             case LOGIN_SCREEN:
-                shutDown();
+                if (miningScript.isRunning()) {
+                    onDisable();
+                }
+                break;
             default:
                 break;
         }
+    }
+
+    // --- IManagedPlugin Implementation ---
+
+    @Override
+    public String getName() {
+        return "Mining Plugin";
+    }
+
+    @Override
+    public String getDescription() {
+        return "A mining script.";
+    }
+
+    @Override
+    public void onEnable() {
+        startUp();
+    }
+
+    @Override
+    public void onDisable() {
+        shutDown();
+    }
+
+    @Override
+    public JPanel getConfigurationPanel() {
+        return null;
     }
 }

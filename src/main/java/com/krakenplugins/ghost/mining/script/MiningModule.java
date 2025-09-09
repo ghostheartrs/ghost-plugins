@@ -1,7 +1,7 @@
-package com.krakenplugins.example.mining.script;
+package com.krakenplugins.ghost.mining.script;
 
 import com.google.inject.AbstractModule;
-import com.krakenplugins.example.mining.script.factory.*;
+import com.krakenplugins.ghost.mining.script.factory.*;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

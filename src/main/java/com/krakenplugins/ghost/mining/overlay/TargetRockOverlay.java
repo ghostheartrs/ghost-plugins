@@ -1,7 +1,7 @@
-package com.krakenplugins.example.mining.overlay;
+package com.krakenplugins.ghost.mining.overlay;
 
-import com.krakenplugins.example.mining.MiningConfig;
-import com.krakenplugins.example.mining.script.MiningScript;
+import com.krakenplugins.ghost.mining.MiningConfig;
+import com.krakenplugins.ghost.mining.script.MiningScript;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;

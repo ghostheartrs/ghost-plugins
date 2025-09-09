@@ -1,4 +1,4 @@
-package com.krakenplugins.example.mining.script.actions;
+package com.krakenplugins.ghost.mining.script.actions;
 
 import com.google.inject.Inject;
 import com.kraken.api.core.RandomService;
@@ -9,8 +9,8 @@ import com.kraken.api.interaction.gameobject.GameObjectService;
 import com.kraken.api.interaction.inventory.InventoryChanged;
 import com.kraken.api.interaction.inventory.InventoryService;
 import com.kraken.api.interaction.inventory.InventoryUpdateType;
-import com.krakenplugins.example.mining.script.BaseScriptNode;
-import com.krakenplugins.example.mining.script.ScriptContext;
+import com.krakenplugins.ghost.mining.script.BaseScriptNode;
+import com.krakenplugins.ghost.mining.script.ScriptContext;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
@@ -18,8 +18,6 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.client.eventbus.Subscribe;
-
-import java.util.Random;
 
 @Slf4j
 public class ClickRockAction extends BaseScriptNode implements ActionNode {

@@ -1,18 +1,19 @@
-package com.krakenplugins.example.mining.script;
+package com.krakenplugins.ghost.mining.script;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.kraken.api.Context;
 import com.kraken.api.core.script.BehaviorNode;
 import com.kraken.api.core.script.BehaviorTreeScript;
-import com.krakenplugins.example.mining.script.actions.*;
-import com.krakenplugins.example.mining.script.conditions.AtBankCondition;
-import com.krakenplugins.example.mining.script.conditions.InMiningAreaCondition;
-import com.krakenplugins.example.mining.script.conditions.InventoryFullCondition;
-import com.krakenplugins.example.mining.script.conditions.IsMiningCondition;
-import com.krakenplugins.example.mining.script.factory.RepeatNodeFactory;
-import com.krakenplugins.example.mining.script.factory.SelectorNodeFactory;
-import com.krakenplugins.example.mining.script.factory.SequenceNodeFactory;
+import com.krakenplugins.ghost.mining.script.actions.*;
+import com.krakenplugins.ghost.mining.script.actions.*;
+import com.krakenplugins.ghost.mining.script.conditions.AtBankCondition;
+import com.krakenplugins.ghost.mining.script.conditions.InMiningAreaCondition;
+import com.krakenplugins.ghost.mining.script.conditions.InventoryFullCondition;
+import com.krakenplugins.ghost.mining.script.conditions.IsMiningCondition;
+import com.krakenplugins.ghost.mining.script.factory.RepeatNodeFactory;
+import com.krakenplugins.ghost.mining.script.factory.SelectorNodeFactory;
+import com.krakenplugins.ghost.mining.script.factory.SequenceNodeFactory;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,7 +21,7 @@ import net.runelite.api.coords.WorldPoint;
 
 import java.util.List;
 
-import static com.krakenplugins.example.mining.script.Util.getRandomDelay;
+import static com.krakenplugins.ghost.mining.script.Util.getRandomDelay;
 
 @Slf4j
 @Singleton

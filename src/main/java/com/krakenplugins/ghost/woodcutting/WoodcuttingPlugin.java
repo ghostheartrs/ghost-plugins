@@ -1,46 +1,34 @@
-package com.krakenplugins.ghost.mining;
+package com.krakenplugins.ghost.woodcutting;
 
 import com.google.inject.Binder;
 import com.google.inject.Inject;
-import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import com.kraken.api.overlay.MouseTrackerOverlay;
-import com.kraken.api.overlay.MovementOverlay;
-import com.krakenplugins.ghost.mining.overlay.ScriptOverlay;
-import com.krakenplugins.ghost.mining.overlay.TargetRockOverlay;
-import com.krakenplugins.ghost.mining.script.MiningModule;
-import com.krakenplugins.ghost.mining.script.MiningScript;
-import com.krakenplugins.ghost.mining.script.actions.ClickRockAction;
-import lombok.Getter;
+import com.krakenplugins.ghostloader.IManagedPlugin;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.client.callback.ClientThread;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.OverlayManager;
 
+import javax.swing.JPanel;
+
 @Slf4j
 @Singleton
 @PluginDescriptor(
-        name = "Mining Plugin",
+        name = "Woodcutting Plugin",
         enabledByDefault = false,
-        description = "Demonstrates an example of building a Mining automation plugin using the Kraken API.",
-        tags = {"example", "automation", "kraken"}
+        description = "A woodcutting script.",
+        tags = {"woodcutting", "automation", "kraken"},
+        hidden = true
 )
-public class MiningPlugin extends Plugin {
+public class WoodcuttingPlugin extends Plugin implements IManagedPlugin {
 
     @Inject
     private Client client;
-
-    @Getter
-    @Inject
-    private ClientThread clientThread;
 
     @Inject
     private EventBus eventBus;
@@ -48,65 +36,28 @@ public class MiningPlugin extends Plugin {
     @Inject
     private OverlayManager overlayManager;
 
-    // Helper Overlay for displaying movement paths from the MovementService within the API.
     @Inject
-    private MovementOverlay movementOverlay;
-
-    @Inject
-    private ScriptOverlay scriptOverlay;
-
-    @Inject
-    private MouseTrackerOverlay mouseTrackerOverlay;
-
-    @Inject
-    private TargetRockOverlay targetRockOverlay;
-
-    @Inject
-    private MiningScript miningScript;
-
-    @Provides
-    MiningConfig provideConfig(final ConfigManager configManager) {
-        return configManager.getConfig(MiningConfig.class);
-    }
+    private WoodcuttingScript woodcuttingScript;
 
     @Override
     public void configure(final Binder binder) {
-        binder.install(new MiningModule());
+        binder.install(new WoodcuttingModule());
     }
 
     @Override
     protected void startUp() {
-        // This action subscribes to runelite events and thus must be registered with the event bus.
-        eventBus.register(ClickRockAction.class);
-
-        overlayManager.add(movementOverlay);
-        overlayManager.add(scriptOverlay);
-        overlayManager.add(mouseTrackerOverlay);
-        overlayManager.add(targetRockOverlay);
-
         if (client.getGameState() == GameState.LOGGED_IN) {
-            log.info("Starting Mining Plugin...");
-            miningScript.start();
+            log.info("Starting Woodcutting Plugin...");
+            woodcuttingScript.start();
         }
     }
 
     @Override
     protected void shutDown() {
-        overlayManager.remove(movementOverlay);
-        overlayManager.remove(scriptOverlay);
-        overlayManager.remove(mouseTrackerOverlay);
-        overlayManager.remove(targetRockOverlay);
-        if(miningScript.isRunning()) {
-            log.info("Shutting down Mining Plugin...");
-            miningScript.stop();
+        if(woodcuttingScript.isRunning()) {
+            log.info("Shutting down Woodcutting Plugin...");
+            woodcuttingScript.stop();
         }
-    }
-
-    @Subscribe
-    private void onMenuOptionClicked(MenuOptionClicked event) {
-        log.info("Option={}, Target={}, Param0={}, Param1={}, MenuAction={}, ItemId={}, id={}, itemOp={}, str={}",
-                event.getMenuOption(), event.getMenuTarget(), event.getParam0(), event.getParam1(), event.getMenuAction().name(), event.getItemId(),
-                event.getId(), event.getItemOp(), event);
     }
 
     @Subscribe
@@ -115,13 +66,45 @@ public class MiningPlugin extends Plugin {
 
         switch (gameState) {
             case LOGGED_IN:
-                startUp();
+                if (!woodcuttingScript.isRunning()) {
+                    woodcuttingScript.start();
+                }
                 break;
             case HOPPING:
             case LOGIN_SCREEN:
-                shutDown();
+                if (woodcuttingScript.isRunning()) {
+                    woodcuttingScript.stop();
+                }
+                break;
             default:
                 break;
         }
+    }
+
+    // --- IManagedPlugin Implementation ---
+
+    @Override
+    public String getName() {
+        return "Woodcutting Plugin";
+    }
+
+    @Override
+    public String getDescription() {
+        return "A woodcutting script.";
+    }
+
+    @Override
+    public void onEnable() {
+        startUp();
+    }
+
+    @Override
+    public void onDisable() {
+        shutDown();
+    }
+
+    @Override
+    public JPanel getConfigurationPanel() {
+        return null;
     }
 }

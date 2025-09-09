@@ -1,4 +1,4 @@
-package com.krakenplugins.example.mining.script;
+package com.krakenplugins.ghost.mining.script;
 
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.TileObject;

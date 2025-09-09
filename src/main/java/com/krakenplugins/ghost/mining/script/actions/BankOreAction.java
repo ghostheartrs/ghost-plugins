@@ -1,18 +1,18 @@
-package com.krakenplugins.example.mining.script.actions;
+package com.krakenplugins.ghost.mining.script.actions;
 
 import com.kraken.api.core.SleepService;
 import com.kraken.api.core.script.BehaviorResult;
 import com.kraken.api.core.script.node.ActionNode;
 import com.kraken.api.interaction.bank.BankService;
 import com.kraken.api.interaction.gameobject.GameObjectService;
-import com.krakenplugins.example.mining.script.BaseScriptNode;
-import com.krakenplugins.example.mining.script.ScriptContext;
+import com.krakenplugins.ghost.mining.script.BaseScriptNode;
+import com.krakenplugins.ghost.mining.script.ScriptContext;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 
 import javax.inject.Inject;
 
-import static com.krakenplugins.example.mining.script.MiningScript.IRON_ORE_ID;
+import static com.krakenplugins.ghost.mining.script.MiningScript.IRON_ORE_ID;
 
 @Slf4j
 public class BankOreAction extends BaseScriptNode implements ActionNode {
