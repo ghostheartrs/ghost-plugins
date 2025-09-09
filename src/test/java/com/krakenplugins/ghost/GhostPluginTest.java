@@ -1,6 +1,6 @@
-package com.krakenplugins.example;
+package com.krakenplugins.ghost;
 
-import com.krakenplugins.example.mining.MiningPlugin;
+import com.krakenplugins.ghost.mining.MiningPlugin;
 import net.runelite.client.RuneLite;
 import net.runelite.client.externalplugins.ExternalPluginManager;
 
