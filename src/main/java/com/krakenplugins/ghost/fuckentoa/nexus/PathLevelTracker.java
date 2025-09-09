@@ -28,14 +28,12 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package ca.plugins.fuckentoa.nexus;
+package com.krakenplugins.ghost.fuckentoa.nexus;
 
-import ca.plugins.fuckentoa.FuckenToaConfig;
-import ca.plugins.fuckentoa.module.PluginLifecycleComponent;
-import ca.plugins.fuckentoa.util.RaidRoom;
-import ca.plugins.fuckentoa.util.RaidState;
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import com.krakenplugins.ghost.fuckentoa.FuckenToaConfig;
+import com.krakenplugins.ghost.fuckentoa.module.PluginLifecycleComponent;
+import com.krakenplugins.ghost.fuckentoa.util.RaidRoom;
+import com.krakenplugins.ghost.fuckentoa.util.RaidState;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
@@ -44,6 +42,9 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)

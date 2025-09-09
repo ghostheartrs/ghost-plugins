@@ -28,34 +28,17 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package ca.plugins.fuckentoa.tomb;
+package com.krakenplugins.ghost.fuckentoa.tomb;
 
-import ca.plugins.fuckentoa.FuckenToaConfig;
-import ca.plugins.fuckentoa.event.Sarcophagus;
-import ca.plugins.fuckentoa.module.PluginLifecycleComponent;
-import ca.plugins.fuckentoa.util.RaidRoom;
-import ca.plugins.fuckentoa.util.RaidState;
-import ca.plugins.fuckentoa.util.FuckenToaUtils;
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.annotation.Nullable;
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import com.krakenplugins.ghost.fuckentoa.FuckenToaConfig;
+import com.krakenplugins.ghost.fuckentoa.event.Sarcophagus;
+import com.krakenplugins.ghost.fuckentoa.module.PluginLifecycleComponent;
+import com.krakenplugins.ghost.fuckentoa.util.FuckenToaUtils;
+import com.krakenplugins.ghost.fuckentoa.util.RaidRoom;
+import com.krakenplugins.ghost.fuckentoa.util.RaidState;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Animation;
-import net.runelite.api.ChatLineBuffer;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.DynamicObject;
-import net.runelite.api.MessageNode;
-import net.runelite.api.Model;
-import net.runelite.api.Renderable;
-import net.runelite.api.WallObject;
+import net.runelite.api.*;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
@@ -65,6 +48,16 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.util.Text;
+
+import javax.annotation.Nullable;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Slf4j
 @Singleton

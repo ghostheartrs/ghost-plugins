@@ -28,30 +28,23 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package ca.plugins.fuckentoa.boss;
+package com.krakenplugins.ghost.fuckentoa.boss;
 
-import ca.plugins.fuckentoa.FuckenToaConfig;
-import ca.plugins.fuckentoa.FuckenToaConfig.PrayerMode;
-import ca.plugins.fuckentoa.util.FuckenToaUtils;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Queue;
-import javax.annotation.Nullable;
+import com.krakenplugins.ghost.fuckentoa.FuckenToaConfig;
+import com.krakenplugins.ghost.fuckentoa.FuckenToaConfig.PrayerMode;
+import com.krakenplugins.ghost.fuckentoa.util.FuckenToaUtils;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.widgets.Widget;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.*;
+
+import javax.annotation.Nullable;
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Queue;
 
 public abstract class PrayerWidgetOverlay extends Overlay
 {

@@ -28,27 +28,16 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package ca.plugins.fuckentoa.boss.akkha;
+package com.krakenplugins.ghost.fuckentoa.boss.akkha;
 
-import ca.plugins.fuckentoa.FuckenToaConfig;
-import ca.plugins.fuckentoa.module.PluginLifecycleComponent;
-import ca.plugins.fuckentoa.util.RaidState;
+import com.krakenplugins.ghost.fuckentoa.FuckenToaConfig;
+import com.krakenplugins.ghost.fuckentoa.module.PluginLifecycleComponent;
+import com.krakenplugins.ghost.fuckentoa.util.RaidState;
 import com.google.common.collect.ImmutableSet;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Set;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.runelite.api.Animation;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.DynamicObject;
-import net.runelite.api.GameObject;
-import net.runelite.api.Renderable;
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectSpawned;
@@ -56,6 +45,13 @@ import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.util.Text;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Set;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)

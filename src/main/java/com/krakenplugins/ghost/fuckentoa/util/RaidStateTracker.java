@@ -28,11 +28,9 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package ca.plugins.fuckentoa.util;
+package com.krakenplugins.ghost.fuckentoa.util;
 
-import ca.plugins.fuckentoa.module.PluginLifecycleComponent;
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import com.krakenplugins.ghost.fuckentoa.module.PluginLifecycleComponent;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
 import net.runelite.api.coords.LocalPoint;
@@ -41,6 +39,9 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)

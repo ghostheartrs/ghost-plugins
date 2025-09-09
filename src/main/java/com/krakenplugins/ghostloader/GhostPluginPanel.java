@@ -15,10 +15,13 @@ import java.util.List;
 class GhostPluginPanel extends PluginPanel {
     
     private static final ImageIcon GHOST_ICON;
+    private static final ImageIcon KRAKEN_ICON;
     
     static {
-        final BufferedImage ghostIcon = ImageUtil.loadImageResource(GhostPluginPanel.class, "/kraken.png");
+        final BufferedImage ghostIcon = ImageUtil.loadImageResource(GhostPluginPanel.class, "/ghostheart.png");
         GHOST_ICON = new ImageIcon(ghostIcon);
+        final BufferedImage krakenIcon = ImageUtil.loadImageResource(GhostPluginPanel.class, "/kraken.png");
+        KRAKEN_ICON = new ImageIcon(krakenIcon);
     }
 
     /**
@@ -50,6 +53,9 @@ class GhostPluginPanel extends PluginPanel {
         titleTexts.add(subtitle);
 
         titlePanel.add(titleTexts, BorderLayout.CENTER);
+        
+        final JLabel krakenLabel = new JLabel(new ImageIcon(KRAKEN_ICON.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
+        titlePanel.add(krakenLabel, BorderLayout.EAST);
 
         add(titlePanel, BorderLayout.NORTH);
 

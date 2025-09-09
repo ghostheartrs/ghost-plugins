@@ -28,54 +28,45 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package ca.plugins.fuckentoa.module;
+package com.krakenplugins.ghost.fuckentoa.module;
 
-import ca.plugins.fuckentoa.FuckenToaConfig;
-import ca.plugins.fuckentoa.boss.akkha.Akkha;
-import ca.plugins.fuckentoa.boss.akkha.AkkhaFinalStand;
-import ca.plugins.fuckentoa.boss.akkha.AkkhaMemoryBlast;
-import ca.plugins.fuckentoa.boss.akkha.AkkhaPrayerInfoboxOverlay;
-import ca.plugins.fuckentoa.boss.akkha.AkkhaPrayerWidgetOverlay;
-import ca.plugins.fuckentoa.boss.akkha.AkkhaSceneOverlay;
-import ca.plugins.fuckentoa.boss.baba.Baba;
-import ca.plugins.fuckentoa.boss.baba.BabaSceneOverlay;
-import ca.plugins.fuckentoa.boss.kephri.Kephri;
-import ca.plugins.fuckentoa.boss.kephri.KephriSceneOverlay;
-import ca.plugins.fuckentoa.boss.warden.phase2.WardenP2;
-import ca.plugins.fuckentoa.boss.warden.phase2.WardenP2PrayerInfoboxOverlay;
-import ca.plugins.fuckentoa.boss.warden.phase2.WardenP2PrayerWidgetOverlay;
-import ca.plugins.fuckentoa.boss.warden.phase2.WardenP2SceneOverlay;
-import ca.plugins.fuckentoa.boss.warden.phase3.WardenP3;
-import ca.plugins.fuckentoa.boss.warden.phase3.WardenP3PrayerInfoboxOverlay;
-import ca.plugins.fuckentoa.boss.warden.phase3.WardenP3PrayerWidgetOverlay;
-import ca.plugins.fuckentoa.boss.warden.phase3.WardenP3SceneOverlay;
-import ca.plugins.fuckentoa.boss.zebak.Zebak;
-import ca.plugins.fuckentoa.boss.zebak.ZebakPrayerInfoboxOverlay;
-import ca.plugins.fuckentoa.boss.zebak.ZebakPrayerWidgetOverlay;
-import ca.plugins.fuckentoa.boss.zebak.ZebakSceneOverlay;
-import ca.plugins.fuckentoa.challenge.QuickProceedSwaps;
-import ca.plugins.fuckentoa.challenge.apmeken.Apmeken;
-import ca.plugins.fuckentoa.challenge.apmeken.ApmekenOverlay;
-import ca.plugins.fuckentoa.challenge.het.Het;
-import ca.plugins.fuckentoa.challenge.het.HetOverlay;
-import ca.plugins.fuckentoa.challenge.scabaras.ScabarasAdditionPuzzle;
-import ca.plugins.fuckentoa.challenge.scabaras.ScabarasLightPuzzle;
-import ca.plugins.fuckentoa.challenge.scabaras.ScabarasMatchingPuzzle;
-import ca.plugins.fuckentoa.challenge.scabaras.ScabarasObeliskPuzzle;
-import ca.plugins.fuckentoa.challenge.scabaras.ScabarasOverlay;
-import ca.plugins.fuckentoa.challenge.scabaras.ScabarasSequencePuzzle;
-import ca.plugins.fuckentoa.hud.FadeDisabler;
-import ca.plugins.fuckentoa.hud.HpOrbManager;
-import ca.plugins.fuckentoa.nexus.PathLevelTracker;
-import ca.plugins.fuckentoa.pointstracker.PointsTracker;
-import ca.plugins.fuckentoa.tomb.SarcophagusRecolorer;
-import ca.plugins.fuckentoa.util.RaidStateTracker;
+import com.krakenplugins.ghost.fuckentoa.FuckenToaConfig;
+import com.krakenplugins.ghost.fuckentoa.boss.akkha.*;
+import com.krakenplugins.ghost.fuckentoa.boss.baba.Baba;
+import com.krakenplugins.ghost.fuckentoa.boss.baba.BabaSceneOverlay;
+import com.krakenplugins.ghost.fuckentoa.boss.kephri.Kephri;
+import com.krakenplugins.ghost.fuckentoa.boss.kephri.KephriSceneOverlay;
+import com.krakenplugins.ghost.fuckentoa.boss.warden.phase2.WardenP2;
+import com.krakenplugins.ghost.fuckentoa.boss.warden.phase2.WardenP2PrayerInfoboxOverlay;
+import com.krakenplugins.ghost.fuckentoa.boss.warden.phase2.WardenP2PrayerWidgetOverlay;
+import com.krakenplugins.ghost.fuckentoa.boss.warden.phase2.WardenP2SceneOverlay;
+import com.krakenplugins.ghost.fuckentoa.boss.warden.phase3.WardenP3;
+import com.krakenplugins.ghost.fuckentoa.boss.warden.phase3.WardenP3PrayerInfoboxOverlay;
+import com.krakenplugins.ghost.fuckentoa.boss.warden.phase3.WardenP3PrayerWidgetOverlay;
+import com.krakenplugins.ghost.fuckentoa.boss.warden.phase3.WardenP3SceneOverlay;
+import com.krakenplugins.ghost.fuckentoa.boss.zebak.Zebak;
+import com.krakenplugins.ghost.fuckentoa.boss.zebak.ZebakPrayerInfoboxOverlay;
+import com.krakenplugins.ghost.fuckentoa.boss.zebak.ZebakPrayerWidgetOverlay;
+import com.krakenplugins.ghost.fuckentoa.boss.zebak.ZebakSceneOverlay;
+import com.krakenplugins.ghost.fuckentoa.challenge.QuickProceedSwaps;
+import com.krakenplugins.ghost.fuckentoa.challenge.apmeken.Apmeken;
+import com.krakenplugins.ghost.fuckentoa.challenge.apmeken.ApmekenOverlay;
+import com.krakenplugins.ghost.fuckentoa.challenge.het.Het;
+import com.krakenplugins.ghost.fuckentoa.challenge.het.HetOverlay;
+import com.krakenplugins.ghost.fuckentoa.challenge.scabaras.*;
+import com.krakenplugins.ghost.fuckentoa.hud.FadeDisabler;
+import com.krakenplugins.ghost.fuckentoa.hud.HpOrbManager;
+import com.krakenplugins.ghost.fuckentoa.nexus.PathLevelTracker;
+import com.krakenplugins.ghost.fuckentoa.pointstracker.PointsTracker;
+import com.krakenplugins.ghost.fuckentoa.tomb.SarcophagusRecolorer;
+import com.krakenplugins.ghost.fuckentoa.util.RaidStateTracker;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.multibindings.Multibinder;
-import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ConfigManager;
+
+import javax.inject.Singleton;
 
 @Slf4j
 public class FuckenToaModule extends AbstractModule

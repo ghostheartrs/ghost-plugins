@@ -28,18 +28,19 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package ca.plugins.fuckentoa.boss.akkha;
+package com.krakenplugins.ghost.fuckentoa.boss.akkha;
 
-import ca.plugins.fuckentoa.FuckenToaConfig;
-import ca.plugins.fuckentoa.boss.PrayerInfoboxOverlay;
-import ca.plugins.fuckentoa.module.PluginLifecycleComponent;
-import ca.plugins.fuckentoa.util.RaidState;
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import com.krakenplugins.ghost.fuckentoa.FuckenToaConfig;
+import com.krakenplugins.ghost.fuckentoa.boss.PrayerInfoboxOverlay;
+import com.krakenplugins.ghost.fuckentoa.module.PluginLifecycleComponent;
+import com.krakenplugins.ghost.fuckentoa.util.RaidState;
 import net.runelite.api.Client;
 import net.runelite.api.Prayer;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.OverlayManager;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 @Singleton
 public class AkkhaPrayerInfoboxOverlay extends PrayerInfoboxOverlay implements PluginLifecycleComponent

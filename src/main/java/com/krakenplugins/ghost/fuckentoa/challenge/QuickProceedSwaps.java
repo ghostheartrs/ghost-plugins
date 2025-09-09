@@ -28,18 +28,15 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package ca.plugins.fuckentoa.challenge;
+package com.krakenplugins.ghost.fuckentoa.challenge;
 
-import ca.plugins.fuckentoa.FuckenToaConfig;
-import ca.plugins.fuckentoa.FuckenToaConfig.QuickProceed;
-import ca.plugins.fuckentoa.module.PluginLifecycleComponent;
-import ca.plugins.fuckentoa.util.RaidRoom;
-import ca.plugins.fuckentoa.util.RaidState;
-import ca.plugins.fuckentoa.util.RaidStateTracker;
+import com.krakenplugins.ghost.fuckentoa.FuckenToaConfig;
+import com.krakenplugins.ghost.fuckentoa.FuckenToaConfig.QuickProceed;
+import com.krakenplugins.ghost.fuckentoa.module.PluginLifecycleComponent;
+import com.krakenplugins.ghost.fuckentoa.util.RaidRoom;
+import com.krakenplugins.ghost.fuckentoa.util.RaidState;
+import com.krakenplugins.ghost.fuckentoa.util.RaidStateTracker;
 import com.google.common.collect.ImmutableSet;
-import java.util.Set;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NpcID;
@@ -47,6 +44,10 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import java.util.Set;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)

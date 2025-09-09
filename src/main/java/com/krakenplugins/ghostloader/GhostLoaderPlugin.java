@@ -45,7 +45,7 @@ public class GhostLoaderPlugin extends Plugin {
 
         panel = new GhostPluginPanel(managedPlugins);
 
-        final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "/kraken.png");
+        final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "/ghostheart.png");
 
         navButton = NavigationButton.builder()
                 .tooltip("Ghost Loader")

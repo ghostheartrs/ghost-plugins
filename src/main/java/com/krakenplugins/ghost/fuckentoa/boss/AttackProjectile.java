@@ -28,12 +28,13 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package ca.plugins.fuckentoa.boss;
+package com.krakenplugins.ghost.fuckentoa.boss;
 
-import java.util.Comparator;
 import lombok.Getter;
 import lombok.NonNull;
 import net.runelite.api.Prayer;
+
+import java.util.Comparator;
 
 public final class AttackProjectile implements Comparable<AttackProjectile>
 {

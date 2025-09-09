@@ -28,35 +28,26 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package ca.plugins.fuckentoa.boss.warden.phase2;
+package com.krakenplugins.ghost.fuckentoa.boss.warden.phase2;
 
-import ca.plugins.fuckentoa.FuckenToaConfig;
-import static ca.plugins.fuckentoa.boss.warden.phase2.WardenP2.ANIMATION_ID_WARDEN_STANDING_UP;
-import ca.plugins.fuckentoa.module.PluginLifecycleComponent;
-import ca.plugins.fuckentoa.util.RaidState;
-import ca.plugins.fuckentoa.util.FuckenToaUtils;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
+import com.krakenplugins.ghost.fuckentoa.FuckenToaConfig;
+import com.krakenplugins.ghost.fuckentoa.module.PluginLifecycleComponent;
+import com.krakenplugins.ghost.fuckentoa.util.FuckenToaUtils;
+import com.krakenplugins.ghost.fuckentoa.util.RaidState;
+import net.runelite.api.*;
+import net.runelite.api.Point;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldArea;
+import net.runelite.client.ui.overlay.*;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import java.awt.*;
 import java.awt.geom.Area;
 import java.util.AbstractMap;
 import java.util.Set;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.api.Client;
-import net.runelite.api.NPC;
-import net.runelite.api.Perspective;
-import net.runelite.api.Point;
-import net.runelite.api.Projectile;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldArea;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
-import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.OverlayUtil;
+
+import static com.krakenplugins.ghost.fuckentoa.boss.warden.phase2.WardenP2.ANIMATION_ID_WARDEN_STANDING_UP;
 
 @Singleton
 public class WardenP2SceneOverlay extends Overlay implements PluginLifecycleComponent

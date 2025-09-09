@@ -28,17 +28,10 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package ca.plugins.fuckentoa.boss;
+package com.krakenplugins.ghost.fuckentoa.boss;
 
-import ca.plugins.fuckentoa.FuckenToaConfig;
-import ca.plugins.fuckentoa.FuckenToaConfig.PrayerMode;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import javax.annotation.Nullable;
+import com.krakenplugins.ghost.fuckentoa.FuckenToaConfig;
+import com.krakenplugins.ghost.fuckentoa.FuckenToaConfig.PrayerMode;
 import lombok.NonNull;
 import net.runelite.api.Client;
 import net.runelite.api.Prayer;
@@ -51,6 +44,10 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.InfoBoxComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+
+import javax.annotation.Nullable;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public abstract class PrayerInfoboxOverlay extends Overlay
 {
