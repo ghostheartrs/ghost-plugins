@@ -13,7 +13,7 @@ idea {
 }
 
 def runeLiteVersion = 'latest.release'
-def krakenApiVersion = '1.0.50'
+def krakenApiVersion = '1.0.69'
 
 group = 'com.krakenplugins'
 version = '1.0.0'
@@ -36,6 +36,7 @@ dependencies {
     compileOnly group: 'net.runelite', name:'client', version: runeLiteVersion
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    testImplementation 'junit:junit:4.12'
     testImplementation group: 'net.runelite', name:'client', version: runeLiteVersion
     testImplementation group: 'net.runelite', name:'jshell', version: runeLiteVersion
 }
