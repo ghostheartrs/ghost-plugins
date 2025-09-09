@@ -1,5 +1,15 @@
 plugins {
     id 'java'
+    id 'idea'
+    id 'checkstyle'
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+}
+
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
 }
 
 def runeLiteVersion = 'latest.release'
@@ -20,17 +30,22 @@ repositories {
 dependencies {
     implementation group: 'com.github.cbartram', name:'kraken-api', version: krakenApiVersion
     implementation group: 'com.github.cbartram', name:'shortest-path', version: '1.0.2'
-    compileOnly group: 'net.runelite', name:'client', version: runeLiteVersion
-    compileOnly 'org.projectlombok:lombok:1.18.30'
-    annotationProcessor 'org.projectlombok:lombok:1.18.30'
     implementation group: 'com.google.inject.extensions', name: 'guice-multibindings', version: '4.1.0', {
         exclude group: 'com.google.inject'
     }
-    testImplementation 'junit:junit:4.12'
+    compileOnly group: 'net.runelite', name:'client', version: runeLiteVersion
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
     testImplementation group: 'net.runelite', name:'client', version: runeLiteVersion
     testImplementation group: 'net.runelite', name:'jshell', version: runeLiteVersion
 }
 
 test {
     useJUnitPlatform()
+}
+
+tasks {
+    shadowJar {
+        archiveFileName.set("${project.name}-${project.version}.jar")
+    }
 }
