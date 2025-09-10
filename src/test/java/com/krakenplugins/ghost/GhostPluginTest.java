@@ -1,5 +1,6 @@
 package com.krakenplugins.ghost;
 
+import com.krakenplugins.ghost.gemcrab.GemCrabPlugin;
 import com.krakenplugins.ghostloader.GhostLoaderPlugin;
 import com.krakenplugins.ghost.mining.MiningPlugin;
 import com.krakenplugins.ghost.woodcutting.WoodcuttingPlugin;
@@ -13,7 +14,8 @@ public class GhostPluginTest {
                 GhostLoaderPlugin.class,
                 MiningPlugin.class,
                 WoodcuttingPlugin.class,
-                FuckenToaPlugin.class
+                FuckenToaPlugin.class,
+                GemCrabPlugin.class
         );
         RuneLite.main(args);
     }

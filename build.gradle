@@ -12,8 +12,16 @@ idea {
     }
 }
 
+sourceSets {
+    main {
+        java {
+            exclude '**/api/**'
+        }
+    }
+}
+
 def runeLiteVersion = 'latest.release'
-def krakenApiVersion = '1.0.69'
+def krakenApiVersion = '1.0.71'
 
 group = 'com.krakenplugins'
 version = '1.0.0'
