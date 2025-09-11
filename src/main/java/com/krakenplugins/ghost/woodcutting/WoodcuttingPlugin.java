@@ -3,7 +3,6 @@ package com.krakenplugins.ghost.woodcutting;
 import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.krakenplugins.ghostloader.IManagedPlugin;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -14,18 +13,15 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-import javax.swing.JPanel;
-
 @Slf4j
 @Singleton
 @PluginDescriptor(
         name = "Woodcutting Plugin",
         enabledByDefault = false,
         description = "A woodcutting script.",
-        tags = {"woodcutting", "automation", "kraken"},
-        hidden = true
+        tags = {"woodcutting", "automation", "kraken"}
 )
-public class WoodcuttingPlugin extends Plugin implements IManagedPlugin {
+public class WoodcuttingPlugin extends Plugin {
 
     @Inject
     private Client client;
@@ -67,44 +63,17 @@ public class WoodcuttingPlugin extends Plugin implements IManagedPlugin {
         switch (gameState) {
             case LOGGED_IN:
                 if (!woodcuttingScript.isRunning()) {
-                    woodcuttingScript.start();
+                    startUp();
                 }
                 break;
             case HOPPING:
             case LOGIN_SCREEN:
                 if (woodcuttingScript.isRunning()) {
-                    woodcuttingScript.stop();
+                    shutDown();
                 }
                 break;
             default:
                 break;
         }
-    }
-
-    // --- IManagedPlugin Implementation ---
-
-    @Override
-    public String getName() {
-        return "Woodcutting Plugin";
-    }
-
-    @Override
-    public String getDescription() {
-        return "A woodcutting script.";
-    }
-
-    @Override
-    public void onEnable() {
-        startUp();
-    }
-
-    @Override
-    public void onDisable() {
-        shutDown();
-    }
-
-    @Override
-    public JPanel getConfigurationPanel() {
-        return null;
     }
 }

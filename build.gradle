@@ -21,7 +21,7 @@ sourceSets {
 }
 
 def runeLiteVersion = 'latest.release'
-def krakenApiVersion = '1.0.71'
+def krakenApiVersion = '1.0.72'
 
 group = 'com.krakenplugins'
 version = '1.0.0'

@@ -34,23 +34,20 @@ import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.krakenplugins.ghost.fuckentoa.module.ComponentManager;
 import com.krakenplugins.ghost.fuckentoa.module.FuckenToaModule;
-import com.krakenplugins.ghostloader.IManagedPlugin;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 import javax.inject.Inject;
-import javax.swing.JPanel;
 
 @Slf4j
 @PluginDescriptor(
         name = "<html><font color=\"#FF0000\">[GH] </font>Fucken Toa</html>",
         description = "A custom overlay based on xKylee's overlay.",
         tags = {"toa", "fucken", "tombs"},
-        enabledByDefault = false,
-        hidden = true
+        enabledByDefault = false
 )
-public class FuckenToaPlugin extends Plugin implements IManagedPlugin
+public class FuckenToaPlugin extends Plugin
 {
 
     @Inject
@@ -79,32 +76,5 @@ public class FuckenToaPlugin extends Plugin implements IManagedPlugin
     protected void shutDown()
     {
         componentManager.onPluginStop();
-    }
-
-    // --- IManagedPlugin Implementation ---
-
-    @Override
-    public String getName() {
-        return "Fucken ToA";
-    }
-
-    @Override
-    public String getDescription() {
-        return "A custom overlay based on xKylee's overlay.";
-    }
-
-    @Override
-    public void onEnable() {
-        startUp();
-    }
-
-    @Override
-    public void onDisable() {
-        shutDown();
-    }
-
-    @Override
-    public JPanel getConfigurationPanel() {
-        return null;
     }
 }

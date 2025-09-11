@@ -11,7 +11,6 @@ import com.krakenplugins.ghost.gemcrab.overlay.TargetCrabOverlay;
 import com.krakenplugins.ghost.gemcrab.script.GemCrabModule;
 import com.krakenplugins.ghost.gemcrab.script.GemCrabScript;
 import com.krakenplugins.ghost.gemcrab.script.actions.AttackCrabAction;
-import com.krakenplugins.ghostloader.IManagedPlugin;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -26,8 +25,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-import javax.swing.JPanel;
-
 @Slf4j
 @Singleton
 @PluginDescriptor(
@@ -36,7 +33,7 @@ import javax.swing.JPanel;
         description = "Automatically fights Gemstone Crabs.",
         tags = {"combat", "automation", "kraken"}
 )
-public class GemCrabPlugin extends Plugin implements IManagedPlugin {
+public class GemCrabPlugin extends Plugin {
 
     @Inject
     private Client client;
@@ -51,7 +48,6 @@ public class GemCrabPlugin extends Plugin implements IManagedPlugin {
     @Inject
     private OverlayManager overlayManager;
 
-    // Helper Overlay for displaying movement paths from the MovementService within the API.
     @Inject
     private MovementOverlay movementOverlay;
 
@@ -79,7 +75,6 @@ public class GemCrabPlugin extends Plugin implements IManagedPlugin {
 
     @Override
     protected void startUp() {
-        // This action subscribes to runelite events and thus must be registered with the event bus.
         eventBus.register(AttackCrabAction.class);
 
         overlayManager.add(movementOverlay);
@@ -119,44 +114,17 @@ public class GemCrabPlugin extends Plugin implements IManagedPlugin {
         switch (gameState) {
             case LOGGED_IN:
                 if (!gemCrabScript.isRunning()) {
-                    onEnable();
+                    startUp();
                 }
                 break;
             case HOPPING:
             case LOGIN_SCREEN:
                 if (gemCrabScript.isRunning()) {
-                    onDisable();
+                    shutDown();
                 }
                 break;
             default:
                 break;
         }
-    }
-
-    // --- IManagedPlugin Implementation ---
-
-    @Override
-    public String getName() {
-        return "GemCrab";
-    }
-
-    @Override
-    public String getDescription() {
-        return "A Gemstone Crab combat script.";
-    }
-
-    @Override
-    public void onEnable() {
-        startUp();
-    }
-
-    @Override
-    public void onDisable() {
-        shutDown();
-    }
-
-    @Override
-    public JPanel getConfigurationPanel() {
-        return null;
     }
 }

@@ -11,7 +11,6 @@ import com.krakenplugins.ghost.mining.overlay.TargetRockOverlay;
 import com.krakenplugins.ghost.mining.script.MiningModule;
 import com.krakenplugins.ghost.mining.script.MiningScript;
 import com.krakenplugins.ghost.mining.script.actions.ClickRockAction;
-import com.krakenplugins.ghostloader.IManagedPlugin;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -26,18 +25,15 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-import javax.swing.JPanel;
-
 @Slf4j
 @Singleton
 @PluginDescriptor(
         name = "Mining Plugin",
         enabledByDefault = false,
         description = "Demonstrates an example of building a Mining automation plugin using the Kraken API.",
-        tags = {"example", "automation", "kraken"},
-        hidden = true // This will hide it from the default plugin list
+        tags = {"example", "automation", "kraken"}
 )
-public class MiningPlugin extends Plugin implements IManagedPlugin {
+public class MiningPlugin extends Plugin {
 
     @Inject
     private Client client;
@@ -52,7 +48,6 @@ public class MiningPlugin extends Plugin implements IManagedPlugin {
     @Inject
     private OverlayManager overlayManager;
 
-    // Helper Overlay for displaying movement paths from the MovementService within the API.
     @Inject
     private MovementOverlay movementOverlay;
 
@@ -80,7 +75,6 @@ public class MiningPlugin extends Plugin implements IManagedPlugin {
 
     @Override
     protected void startUp() {
-        // This action subscribes to runelite events and thus must be registered with the event bus.
         eventBus.register(ClickRockAction.class);
 
         overlayManager.add(movementOverlay);
@@ -120,44 +114,17 @@ public class MiningPlugin extends Plugin implements IManagedPlugin {
         switch (gameState) {
             case LOGGED_IN:
                 if (!miningScript.isRunning()) {
-                    onEnable();
+                    startUp();
                 }
                 break;
             case HOPPING:
             case LOGIN_SCREEN:
                 if (miningScript.isRunning()) {
-                    onDisable();
+                    shutDown();
                 }
                 break;
             default:
                 break;
         }
-    }
-
-    // --- IManagedPlugin Implementation ---
-
-    @Override
-    public String getName() {
-        return "Mining Plugin";
-    }
-
-    @Override
-    public String getDescription() {
-        return "A mining script.";
-    }
-
-    @Override
-    public void onEnable() {
-        startUp();
-    }
-
-    @Override
-    public void onDisable() {
-        shutDown();
-    }
-
-    @Override
-    public JPanel getConfigurationPanel() {
-        return null;
     }
 }
