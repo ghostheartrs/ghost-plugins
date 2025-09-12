@@ -5,6 +5,7 @@ import com.kraken.api.core.SleepService;
 import com.kraken.api.core.script.BehaviorResult;
 import com.kraken.api.core.script.node.ActionNode;
 import com.kraken.api.interaction.gameobject.GameObjectService;
+import com.krakenplugins.ghost.woodcutting.WoodcuttingConfig;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
@@ -12,20 +13,22 @@ import net.runelite.api.ObjectComposition;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 
+import java.util.List;
 import java.util.function.Predicate;
 
-import static com.krakenplugins.ghost.woodcutting.WoodcuttingScript.TREE_IDS;
 import static com.krakenplugins.ghost.woodcutting.WoodcuttingScript.WC_ANIMATIONS;
 
 @Slf4j
 public class ChopTreeAction implements ActionNode {
 
+    private final WoodcuttingConfig config;
     private final GameObjectService gameObjectService;
     private final SleepService sleepService;
     private final Client client;
 
     @Inject
-    public ChopTreeAction(GameObjectService gameObjectService, SleepService sleepService, Client client) {
+    public ChopTreeAction(WoodcuttingConfig config, GameObjectService gameObjectService, SleepService sleepService, Client client) {
+        this.config = config;
         this.gameObjectService = gameObjectService;
         this.sleepService = sleepService;
         this.client = client;
@@ -45,8 +48,10 @@ public class ChopTreeAction implements ActionNode {
 
         WorldPoint playerLocation = localPlayer.getWorldLocation();
 
+        List<Integer> targetTreeIds = config.treeType().getTreeIds();
+
         Predicate<GameObject> treePredicate = o -> {
-            if (!TREE_IDS.contains(o.getId())) {
+            if (!targetTreeIds.contains(o.getId())) {
                 return false;
             }
             ObjectComposition comp = gameObjectService.convertToObjectComposition(o);
@@ -91,7 +96,7 @@ public class ChopTreeAction implements ActionNode {
                 }
             }
         }
-        
+
         log.warn("Failed to interact with tree.");
         return BehaviorResult.FAILURE;
     }

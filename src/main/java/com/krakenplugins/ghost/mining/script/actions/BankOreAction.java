@@ -48,10 +48,14 @@ public class BankOreAction extends BaseScriptNode implements ActionNode {
 
                 sleepService.sleep(600, 1200);
 
-                if(bankService.closeBank()) {
+                bankService.close();
+                sleepService.sleepUntil(() -> !bankService.isOpen(), 2000);
+
+                if (!bankService.isOpen()) {
                     log.info("Bank closed successfully");
                     return BehaviorResult.SUCCESS;
                 } else {
+                    log.warn("Failed to close bank.");
                     return BehaviorResult.FAILURE;
                 }
             } else {

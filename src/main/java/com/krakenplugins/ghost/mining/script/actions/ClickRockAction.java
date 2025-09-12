@@ -6,18 +6,11 @@ import com.kraken.api.core.SleepService;
 import com.kraken.api.core.script.BehaviorResult;
 import com.kraken.api.core.script.node.ActionNode;
 import com.kraken.api.interaction.gameobject.GameObjectService;
-import com.kraken.api.interaction.inventory.InventoryChanged;
-import com.kraken.api.interaction.inventory.InventoryService;
-import com.kraken.api.interaction.inventory.InventoryUpdateType;
 import com.krakenplugins.ghost.mining.script.BaseScriptNode;
 import com.krakenplugins.ghost.mining.script.ScriptContext;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
-import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.gameval.InventoryID;
-import net.runelite.api.gameval.ItemID;
-import net.runelite.client.eventbus.Subscribe;
 
 @Slf4j
 public class ClickRockAction extends BaseScriptNode implements ActionNode {
@@ -25,27 +18,13 @@ public class ClickRockAction extends BaseScriptNode implements ActionNode {
     private final ScriptContext context;
     private final SleepService sleepService;
     private final GameObjectService gameObjectService;
-    private final InventoryService inventoryService;
 
     @Inject
-    public ClickRockAction(Client client, ScriptContext context, SleepService sleepService, GameObjectService gameObjectService, InventoryService inventoryService) {
+    public ClickRockAction(Client client, ScriptContext context, SleepService sleepService, GameObjectService gameObjectService) {
         super(client, context);
         this.context = context;
         this.sleepService = sleepService;
         this.gameObjectService = gameObjectService;
-        this.inventoryService = inventoryService;
-    }
-
-    @Subscribe
-    private void onItemContainerChanged(ItemContainerChanged e) {
-        if(e.getContainerId() == InventoryID.INV) {
-            log.info("Container changed");
-            InventoryChanged change = inventoryService.diff(e.getItemContainer());
-            log.info("Container diff type: {}", change.getChangeType().name());
-            if(ItemID.IRON_ORE == change.getChangedItem().getId() && change.getChangeType() == InventoryUpdateType.ADDED) {
-                context.setOreMined(context.getOreMined() + 1);
-            }
-        }
     }
 
     @Override

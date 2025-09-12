@@ -8,13 +8,9 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.externalplugins.ExternalPluginManager;
 
 public class GhostPluginTest {
-    public static void main(String[] args) throws Exception {
-        ExternalPluginManager.loadBuiltin(
-                MiningPlugin.class,
-                WoodcuttingPlugin.class,
-                FuckenToaPlugin.class,
-                GemCrabPlugin.class
-        );
+    public static void main(final String[] args) throws Exception
+    {
+        ExternalPluginManager.loadBuiltin(FuckenToaPlugin.class, MiningPlugin.class, GemCrabPlugin.class, WoodcuttingPlugin.class);
         RuneLite.main(args);
     }
 }

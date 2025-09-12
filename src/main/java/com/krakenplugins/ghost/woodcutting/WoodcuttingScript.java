@@ -5,11 +5,13 @@ import com.google.inject.Singleton;
 import com.kraken.api.Context;
 import com.kraken.api.core.script.BehaviorNode;
 import com.kraken.api.core.script.BehaviorTreeScript;
-import com.krakenplugins.ghost.mining.script.factory.SelectorNodeFactory;
-import com.krakenplugins.ghost.mining.script.factory.SequenceNodeFactory;
 import com.krakenplugins.ghost.woodcutting.actions.ChopTreeAction;
+import com.krakenplugins.ghost.woodcutting.actions.DropLogsAction;
 import com.krakenplugins.ghost.woodcutting.actions.WaitAction;
+import com.krakenplugins.ghost.woodcutting.conditions.InventoryFullCondition;
 import com.krakenplugins.ghost.woodcutting.conditions.IsChoppingCondition;
+import com.krakenplugins.ghost.woodcutting.factory.SelectorNodeFactory;
+import com.krakenplugins.ghost.woodcutting.factory.SequenceNodeFactory;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
 
@@ -19,7 +21,6 @@ import java.util.List;
 @Singleton
 public class WoodcuttingScript extends BehaviorTreeScript {
 
-    public static final List<Integer> TREE_IDS = List.of(1276, 1278);
     public static final List<Integer> WC_ANIMATIONS = List.of(
             AnimationID.WOODCUTTING_BRONZE,
             AnimationID.WOODCUTTING_IRON,
@@ -31,6 +32,8 @@ public class WoodcuttingScript extends BehaviorTreeScript {
             AnimationID.WOODCUTTING_DRAGON
     );
 
+    private final InventoryFullCondition inventoryFullCondition;
+    private final DropLogsAction dropLogsAction;
     private final IsChoppingCondition isChoppingCondition;
     private final WaitAction waitAction;
     private final ChopTreeAction chopTreeAction;
@@ -39,12 +42,16 @@ public class WoodcuttingScript extends BehaviorTreeScript {
 
     @Inject
     public WoodcuttingScript(Context context,
+                             InventoryFullCondition inventoryFullCondition,
+                             DropLogsAction dropLogsAction,
                              IsChoppingCondition isChoppingCondition,
                              WaitAction waitAction,
                              ChopTreeAction chopTreeAction,
                              SequenceNodeFactory sequenceFactory,
                              SelectorNodeFactory selectorFactory) {
         super(context);
+        this.inventoryFullCondition = inventoryFullCondition;
+        this.dropLogsAction = dropLogsAction;
         this.isChoppingCondition = isChoppingCondition;
         this.waitAction = waitAction;
         this.chopTreeAction = chopTreeAction;
@@ -55,11 +62,15 @@ public class WoodcuttingScript extends BehaviorTreeScript {
     @Override
     protected BehaviorNode buildBehaviorTree() {
         return selectorFactory.create(List.of(
-            sequenceFactory.create(List.of(
-                isChoppingCondition,
-                waitAction
-            )),
-            chopTreeAction
+                sequenceFactory.create(List.of(
+                        inventoryFullCondition,
+                        dropLogsAction
+                )),
+                sequenceFactory.create(List.of(
+                        isChoppingCondition,
+                        waitAction
+                )),
+                chopTreeAction
         ));
     }
 
