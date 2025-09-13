@@ -28,9 +28,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Slf4j
 @Singleton
 @PluginDescriptor(
-        name = "GemCrab",
+        name = "<html><font color=\"#FF0000\">[GH] </font>GemCrab</html>",
         enabledByDefault = false,
-        description = "Automatically fights Gemstone Crabs.",
+        description = "Automatically fights The Gemstone Crab.",
         tags = {"combat", "automation", "kraken"}
 )
 public class GemCrabPlugin extends Plugin {

@@ -20,7 +20,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDescriptor(
         name = "<html><font color=\"#FF0000\">[GH] </font>Woodcutting</html>",
         enabledByDefault = false,
-        description = "Ghost's woodcutting script.",
+        description = "Ghost's AIO woodcutting plugin.",
         tags = {"woodcutting", "automation", "kraken", "ghost"}
 )
 public class WoodcuttingPlugin extends Plugin {

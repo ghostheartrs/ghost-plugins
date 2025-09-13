@@ -43,7 +43,7 @@ import javax.inject.Inject;
 @Slf4j
 @PluginDescriptor(
         name = "<html><font color=\"#FF0000\">[GH] </font>Fucken Toa</html>",
-        description = "A custom overlay based on xKylee's overlay.",
+        description = "A custom overlay based on xKylee's overlays.",
         tags = {"toa", "fucken", "tombs"},
         enabledByDefault = false
 )

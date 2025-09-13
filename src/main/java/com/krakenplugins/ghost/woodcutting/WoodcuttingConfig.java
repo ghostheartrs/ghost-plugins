@@ -11,17 +11,17 @@ public interface WoodcuttingConfig extends Config {
 
 	@ConfigSection(
 		name = "General",
-		description = "",
-		position = 1
+		description = "General settings",
+		position = 0
 	)
 	String general = "General";
 
 	@ConfigItem(
-		keyName = "treeType",
-		name = "Tree Type",
-		description = "The type of tree to chop.",
-		position = 0,
-		section = general
+			keyName = "treeType",
+			name = "Tree",
+			description = "The tree to chop.",
+			position = 0,
+			section = general
 	)
 	default Tree treeType() {
 		return Tree.NORMAL;
@@ -36,5 +36,23 @@ public interface WoodcuttingConfig extends Config {
 	)
 	default boolean highlightTargetTree() {
 		return true;
+	}
+
+	@ConfigSection(
+			name = "Banking",
+			description = "Configure banking settings",
+			position = 1
+	)
+	String banking = "Banking";
+
+	@ConfigItem(
+			keyName = "bankingEnabled",
+			name = "Enable Banking",
+			description = "Enable to bank logs, disable to drop them.",
+			position = 0,
+			section = banking
+	)
+	default boolean bankingEnabled() {
+		return false;
 	}
 }

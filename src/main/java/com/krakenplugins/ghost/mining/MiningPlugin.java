@@ -28,9 +28,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Slf4j
 @Singleton
 @PluginDescriptor(
-        name = "Mining Plugin",
+        name = "<html><font color=\"#FF0000\">[GH] </font>Mining</html>",
         enabledByDefault = false,
-        description = "Demonstrates an example of building a Mining automation plugin using the Kraken API.",
+        description = "Ghost's AIO Mining plugin.",
         tags = {"example", "automation", "kraken"}
 )
 public class MiningPlugin extends Plugin {
