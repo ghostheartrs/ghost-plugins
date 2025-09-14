@@ -1,4 +1,4 @@
-# Ghost's Plugin Pack
+# 👻 Ghost's Plugin Pack 👻
 
 A collection of my personal plugins and edits of existing plugins.
 
@@ -6,7 +6,7 @@ These are based on the Kraken API by [Rune](https://github.com/cbartram/kraken-a
 
 I am mostly working on these as I level a (currently) F2P account.
 
-# Plugins List
+# 🔌 Plugins List
  * Fucken ToA - Overlays based on xKylee's, plans to add automation later.
  * GemCrab - Auto gemcrab so you can afk the afkest combat method ever.
  * Mining - Included from Rune as the example I worked from/referenced, plans to flesh out later.
