@@ -21,7 +21,7 @@ I am mostly working on these as I level a (currently) F2P account.
 
 ---
 
-## 🔖 Versioning
+## 🔖 Versioning 
 
 I just do my own thing but will get around to proper versioning.
 
