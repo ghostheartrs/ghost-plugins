@@ -19,7 +19,7 @@
 *.tar.gz
 *.rar
 
-src/main/java/com/krakenplugins/ghost/api/
+src/main/java/com/ghost/api/
 build
 dist
 

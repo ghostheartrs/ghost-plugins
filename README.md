@@ -12,6 +12,7 @@ I am mostly working on these as I level a (currently) F2P account.
  * GemCrab - Auto gemcrab so you can afk the afkest combat method ever.
  * Mining - Included from Rune as the example I worked from/referenced, plans to flesh out later.
  * Woodcutting - My first plugin! Just auto woodcuts! Banks/drops, very basic right now.
+ * Semi-Auto Agility - Not 100% automated rooftops, but something like that. Will update this as I flesh it out.
 
 ## 🛠 Built With
 
