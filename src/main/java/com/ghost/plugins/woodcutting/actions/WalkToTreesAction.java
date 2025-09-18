@@ -38,23 +38,18 @@ public class WalkToTreesAction implements ActionNode {
             return BehaviorResult.FAILURE;
         }
 
-        List<Integer> targetTreeIds = config.treeType().getTreeIds();
-
-        Predicate<GameObject> treePredicate = o -> {
-            if (!targetTreeIds.contains(o.getId())) {
-                return false;
-            }
-            ObjectComposition comp = gameObjectService.convertToObjectComposition(o);
-            return comp != null && gameObjectService.hasAction(comp, "Chop down");
-        };
-
-        GameObject nearestTree = gameObjectService.getGameObjects(treePredicate, localPlayer.getWorldLocation(), 40)
-                .stream()
-                .findFirst()
-                .orElse(null);
+        // Use the same high-level finder method to locate the nearest tree to walk to.
+        GameObject nearestTree = gameObjectService.findReachableObject(
+                config.treeType().getName(),
+                true, // Exact name match
+                40,   // Distance
+                localPlayer.getWorldLocation(),
+                true, // Check for an action
+                "Chop down"
+        );
 
         if (nearestTree == null) {
-            log.info("No trees found nearby.");
+            log.info("No trees found to walk to.");
             return BehaviorResult.FAILURE;
         }
 

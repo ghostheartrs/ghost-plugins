@@ -4,6 +4,7 @@ import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import com.kraken.api.Context; // <-- Make sure this is imported
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -40,6 +41,9 @@ public class WoodcuttingPlugin extends Plugin {
     @Inject
     private WoodcuttingScript woodcuttingScript;
 
+    @Inject
+    private Context context; // <-- Inject the Context
+
     @Provides
     WoodcuttingConfig provideConfig(final ConfigManager configManager) {
         return configManager.getConfig(WoodcuttingConfig.class);
@@ -54,6 +58,12 @@ public class WoodcuttingPlugin extends Plugin {
     protected void startUp() {
         if (client.getGameState() == GameState.LOGGED_IN) {
             log.info("Starting Woodcutting Plugin...");
+
+            // --- LOAD BOTH ---
+            context.loadHooks();
+            context.loadPacketUtils();
+            // -----------------
+
             woodcuttingScript.start();
         }
     }

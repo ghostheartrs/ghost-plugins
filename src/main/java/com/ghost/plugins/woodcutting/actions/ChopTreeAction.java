@@ -33,35 +33,22 @@ public class ChopTreeAction implements ActionNode {
         this.sleepService = sleepService;
         this.client = client;
     }
-
     @Override
     public BehaviorResult performAction() {
         Player localPlayer = client.getLocalPlayer();
-        if (localPlayer == null) {
+        if (localPlayer == null || localPlayer.getAnimation() != -1) {
             return BehaviorResult.FAILURE;
         }
 
-        if (localPlayer.getAnimation() != -1) {
-            log.info("Player is not idle, waiting before attempting to chop.");
-            return BehaviorResult.FAILURE;
-        }
-
-        WorldPoint playerLocation = localPlayer.getWorldLocation();
-
-        List<Integer> targetTreeIds = config.treeType().getTreeIds();
-
-        Predicate<GameObject> treePredicate = o -> {
-            if (!targetTreeIds.contains(o.getId())) {
-                return false;
-            }
-            ObjectComposition comp = gameObjectService.convertToObjectComposition(o);
-            return comp != null && gameObjectService.hasAction(comp, "Chop down");
-        };
-
-        GameObject nearestTree = gameObjectService.getGameObjects(treePredicate, playerLocation, 15)
-                .stream()
-                .findFirst()
-                .orElse(null);
+        // Use the high-level finder method. It's thread-safe and handles all the logic.
+        GameObject nearestTree = gameObjectService.findReachableObject(
+                config.treeType().getName(),
+                true, // Exact name match
+                15,   // Distance
+                localPlayer.getWorldLocation(),
+                true, // Check for an action
+                "Chop down"
+        );
 
         if (nearestTree == null) {
             log.info("No trees found nearby.");
@@ -72,32 +59,19 @@ public class ChopTreeAction implements ActionNode {
 
         if (gameObjectService.interact(nearestTree, "Chop down")) {
             log.info("Found tree, attempting to chop.");
-
+            // The rest of your logic for waiting after the click is good.
             boolean conditionMet = sleepService.sleepUntil(() -> {
                 Player p = client.getLocalPlayer();
-                if (p == null) {
-                    return false;
-                }
+                if (p == null) return false;
                 return WC_ANIMATIONS.contains(p.getAnimation()) || !locationBeforeClick.equals(p.getWorldLocation());
             }, 5000);
 
-            if (conditionMet) {
-                Player p = client.getLocalPlayer();
-                if (p != null && WC_ANIMATIONS.contains(p.getAnimation())) {
-                    return BehaviorResult.SUCCESS;
-                }
-                if (p != null && !locationBeforeClick.equals(p.getWorldLocation())) {
-                    log.warn("Player moved after clicking tree, assuming misclick. Waiting for player to stop moving.");
-                    sleepService.sleepUntil(() -> {
-                        Player p2 = client.getLocalPlayer();
-                        return p2 == null || p2.getAnimation() == -1;
-                    }, 5000);
-                    return BehaviorResult.FAILURE;
-                }
+            if (conditionMet && client.getLocalPlayer() != null && WC_ANIMATIONS.contains(client.getLocalPlayer().getAnimation())) {
+                return BehaviorResult.SUCCESS;
             }
         }
 
-        log.warn("Failed to interact with tree.");
+        log.warn("Failed to interact with tree or confirm chopping animation.");
         return BehaviorResult.FAILURE;
     }
 }

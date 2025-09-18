@@ -81,48 +81,45 @@ public class WoodcuttingScript extends BehaviorTreeScript {
     @Override
     protected BehaviorNode buildBehaviorTree() {
         ConditionNode bankingEnabled = () -> config.bankingEnabled();
-        ConditionNode notAtBank = () -> !atBankCondition.checkCondition();
-        ConditionNode notAtTrees = () -> !atTreesCondition.checkCondition();
-        ConditionNode notInventoryFull = () -> !inventoryFullCondition.checkCondition();
 
-        BehaviorNode bankingSequence = sequenceFactory.create(List.of(
+        // --- Behavior for when inventory IS FULL ---
+        // This sequence first checks if banking is enabled. If so, it walks to the bank and banks.
+        // If banking is not enabled, the sequence fails and the selector moves to the dropLogsAction.
+        BehaviorNode handleBanking = sequenceFactory.create(List.of(
                 bankingEnabled,
                 selectorFactory.create(List.of(
-                        sequenceFactory.create(List.of(notAtBank, walkToBankAction)),
-                        bankAction
+                        sequenceFactory.create(List.of(atBankCondition, bankAction)),
+                        walkToBankAction
                 ))
         ));
 
         BehaviorNode handleFullInventory = sequenceFactory.create(List.of(
                 inventoryFullCondition,
-                selectorFactory.create(List.of(bankingSequence, dropLogsAction))
+                selectorFactory.create(List.of(
+                        handleBanking,
+                        dropLogsAction // Fallback action if banking is disabled
+                ))
         ));
 
-        BehaviorNode returnToTrees = sequenceFactory.create(List.of(
-                bankingEnabled,
-                notInventoryFull,
-                atBankCondition,
-                walkToTreesAction
-        ));
-
-        BehaviorNode walkToTreesIfNeeded = sequenceFactory.create(List.of(
-                bankingEnabled,
-                notInventoryFull,
-                notAtTrees,
-                notAtBank,
-                walkToTreesAction
-        ));
-
+        // --- Behavior for when inventory IS NOT FULL ---
+// This selector handles the core woodcutting loop.
         BehaviorNode choppingLogic = selectorFactory.create(List.of(
-                sequenceFactory.create(List.of(isChoppingCondition, waitAction)),
-                chopTreeAction
+                sequenceFactory.create(List.of(isChoppingCondition, waitAction)), // If already chopping, just wait.
+                chopTreeAction // If not chopping, find a tree to chop.
         ));
 
+// This sequence ensures the player is at the trees before attempting to chop.
+// The redundant inventory check has been removed.
+        BehaviorNode performWoodcutting = selectorFactory.create(List.of(
+                sequenceFactory.create(List.of(atTreesCondition, choppingLogic)), // If at trees, start chopping logic.
+                walkToTreesAction // If not at trees, walk to them. This is now the fallback.
+        ));
+
+// --- ROOT NODE ---
+// The root selector prioritizes handling a full inventory. If the inventory is not full, it proceeds to woodcutting.
         return selectorFactory.create(List.of(
                 handleFullInventory,
-                returnToTrees,
-                walkToTreesIfNeeded,
-                choppingLogic
+                performWoodcutting
         ));
     }
 

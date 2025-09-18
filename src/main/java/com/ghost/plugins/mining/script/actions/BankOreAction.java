@@ -34,7 +34,7 @@ public class BankOreAction extends BaseScriptNode implements ActionNode {
         context.setStatus("Banking Ore");
         try {
             // Find bank booth or banker
-            TileObject bankBooth = gameObjectService.getAll((o) -> o.getId() == 10583, 10).stream().findFirst().orElse(null);
+            TileObject bankBooth = gameObjectService.all((o) -> o.getId() == 10583, 10).stream().findFirst().orElse(null);
             if (bankBooth != null) {
                 log.info("Opening bank booth");
                 gameObjectService.interact(bankBooth, "Bank");
