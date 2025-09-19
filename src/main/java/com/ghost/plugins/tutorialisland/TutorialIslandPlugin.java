@@ -1,5 +1,6 @@
 package com.ghost.plugins.tutorialisland;
 
+import com.ghost.plugins.tutorialisland.script.TutorialIslandScript;
 import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
