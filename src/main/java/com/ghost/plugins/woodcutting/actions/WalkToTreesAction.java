@@ -38,10 +38,9 @@ public class WalkToTreesAction implements ActionNode {
             return BehaviorResult.FAILURE;
         }
 
-        // Use the same high-level finder method to locate the nearest tree to walk to.
         GameObject nearestTree = gameObjectService.findReachableObject(
                 config.treeType().getName(),
-                true, // Exact name match
+                true,
                 40,   // Distance
                 localPlayer.getWorldLocation(),
                 true, // Check for an action

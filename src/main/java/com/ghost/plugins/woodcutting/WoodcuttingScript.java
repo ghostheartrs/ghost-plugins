@@ -1,22 +1,33 @@
 package com.ghost.plugins.woodcutting;
 
+import com.ghost.plugins.woodcutting.actions.BankAction;
+import com.ghost.plugins.woodcutting.actions.ChopTreeAction;
+import com.ghost.plugins.woodcutting.actions.DropLogsAction;
+import com.ghost.plugins.woodcutting.actions.WaitAction;
+import com.ghost.plugins.woodcutting.actions.WalkToBankAction;
+import com.ghost.plugins.woodcutting.actions.WalkToStartAreaAction;
+import com.ghost.plugins.woodcutting.actions.WalkToTreesAction;
+import com.ghost.plugins.woodcutting.conditions.AtBankCondition;
+import com.ghost.plugins.woodcutting.conditions.AtTreesCondition;
+import com.ghost.plugins.woodcutting.conditions.InventoryFullCondition;
+import com.ghost.plugins.woodcutting.conditions.IsChoppingCondition;
+import com.ghost.plugins.woodcutting.conditions.IsOutOfAreaCondition;
+import com.ghost.plugins.woodcutting.factory.SelectorNodeFactory;
+import com.ghost.plugins.woodcutting.factory.SequenceNodeFactory;
+import com.ghost.plugins.woodcutting.script.ScriptContext;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.kraken.api.Context;
 import com.kraken.api.core.script.BehaviorNode;
 import com.kraken.api.core.script.BehaviorTreeScript;
 import com.kraken.api.core.script.node.ConditionNode;
-import com.ghost.plugins.woodcutting.actions.*;
-import com.ghost.plugins.woodcutting.conditions.AtBankCondition;
-import com.ghost.plugins.woodcutting.conditions.AtTreesCondition;
-import com.ghost.plugins.woodcutting.conditions.InventoryFullCondition;
-import com.ghost.plugins.woodcutting.conditions.IsChoppingCondition;
-import com.ghost.plugins.woodcutting.factory.SelectorNodeFactory;
-import com.ghost.plugins.woodcutting.factory.SequenceNodeFactory;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.AnimationID;
-
 import java.util.List;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Skill;
+import net.runelite.api.AnimationID;
+import net.runelite.api.events.StatChanged;
+import net.runelite.client.eventbus.Subscribe;
 
 @Slf4j
 @Singleton
@@ -46,6 +57,12 @@ public class WoodcuttingScript extends BehaviorTreeScript {
     private final AtTreesCondition atTreesCondition;
     private final SequenceNodeFactory sequenceFactory;
     private final SelectorNodeFactory selectorFactory;
+    private final IsOutOfAreaCondition isOutOfAreaCondition;
+    private final WalkToStartAreaAction walkToStartAreaAction;
+
+    @Getter
+    private final ScriptContext scriptContext;
+    private final Context context;
 
     @Inject
     public WoodcuttingScript(Context context,
@@ -61,8 +78,12 @@ public class WoodcuttingScript extends BehaviorTreeScript {
                              AtBankCondition atBankCondition,
                              AtTreesCondition atTreesCondition,
                              SequenceNodeFactory sequenceFactory,
-                             SelectorNodeFactory selectorFactory) {
+                             SelectorNodeFactory selectorFactory,
+                             IsOutOfAreaCondition isOutOfAreaCondition,
+                             WalkToStartAreaAction walkToStartAreaAction,
+                             ScriptContext scriptContext) {
         super(context);
+        this.context = context;
         this.config = config;
         this.inventoryFullCondition = inventoryFullCondition;
         this.dropLogsAction = dropLogsAction;
@@ -76,55 +97,102 @@ public class WoodcuttingScript extends BehaviorTreeScript {
         this.atTreesCondition = atTreesCondition;
         this.sequenceFactory = sequenceFactory;
         this.selectorFactory = selectorFactory;
+        this.isOutOfAreaCondition = isOutOfAreaCondition;
+        this.walkToStartAreaAction = walkToStartAreaAction;
+        this.scriptContext = scriptContext;
     }
 
     @Override
     protected BehaviorNode buildBehaviorTree() {
         ConditionNode bankingEnabled = () -> config.bankingEnabled();
+        ConditionNode notAtBank = () -> !atBankCondition.checkCondition();
+        ConditionNode notAtTrees = () -> !atTreesCondition.checkCondition();
+        ConditionNode notInventoryFull = () -> !inventoryFullCondition.checkCondition();
 
-        // --- Behavior for when inventory IS FULL ---
-        // This sequence first checks if banking is enabled. If so, it walks to the bank and banks.
-        // If banking is not enabled, the sequence fails and the selector moves to the dropLogsAction.
-        BehaviorNode handleBanking = sequenceFactory.create(List.of(
+        BehaviorNode bankingSequence = sequenceFactory.create(List.of(
                 bankingEnabled,
                 selectorFactory.create(List.of(
-                        sequenceFactory.create(List.of(atBankCondition, bankAction)),
-                        walkToBankAction
+                        sequenceFactory.create(List.of(notAtBank, walkToBankAction)),
+                        bankAction
                 ))
         ));
 
         BehaviorNode handleFullInventory = sequenceFactory.create(List.of(
                 inventoryFullCondition,
-                selectorFactory.create(List.of(
-                        handleBanking,
-                        dropLogsAction // Fallback action if banking is disabled
-                ))
+                selectorFactory.create(List.of(bankingSequence, dropLogsAction))
         ));
 
-        // --- Behavior for when inventory IS NOT FULL ---
-// This selector handles the core woodcutting loop.
+        BehaviorNode returnToTrees = sequenceFactory.create(List.of(
+                bankingEnabled,
+                notInventoryFull,
+                atBankCondition,
+                walkToTreesAction
+        ));
+
+        BehaviorNode walkToTreesIfNeeded = sequenceFactory.create(List.of(
+                bankingEnabled,
+                notInventoryFull,
+                notAtTrees,
+                notAtBank,
+                walkToTreesAction
+        ));
+
         BehaviorNode choppingLogic = selectorFactory.create(List.of(
-                sequenceFactory.create(List.of(isChoppingCondition, waitAction)), // If already chopping, just wait.
-                chopTreeAction // If not chopping, find a tree to chop.
+                sequenceFactory.create(List.of(isChoppingCondition, waitAction)),
+                chopTreeAction
         ));
 
-// This sequence ensures the player is at the trees before attempting to chop.
-// The redundant inventory check has been removed.
-        BehaviorNode performWoodcutting = selectorFactory.create(List.of(
-                sequenceFactory.create(List.of(atTreesCondition, choppingLogic)), // If at trees, start chopping logic.
-                walkToTreesAction // If not at trees, walk to them. This is now the fallback.
+        BehaviorNode handleWandering = sequenceFactory.create(List.of(
+                isOutOfAreaCondition,
+                walkToStartAreaAction
         ));
 
-// --- ROOT NODE ---
-// The root selector prioritizes handling a full inventory. If the inventory is not full, it proceeds to woodcutting.
         return selectorFactory.create(List.of(
                 handleFullInventory,
-                performWoodcutting
+                handleWandering,
+                returnToTrees,
+                walkToTreesIfNeeded,
+                choppingLogic
         ));
     }
 
     @Override
     protected void onBehaviorTreeStart() {
         log.info("Woodcutting Script started!");
+        scriptContext.setStartTime(System.currentTimeMillis());
+        scriptContext.setStartXp(context.getClient().getSkillExperience(Skill.WOODCUTTING));
+        scriptContext.setLogsCut(0);
+        if (context.getClient().getLocalPlayer() != null) {
+            scriptContext.setStartLocation(context.getClient().getLocalPlayer().getWorldLocation());
+        }
+    }
+
+    @Subscribe
+    public void onStatChanged(StatChanged statChanged) {
+        if (statChanged.getSkill() == Skill.WOODCUTTING) {
+            int currentXp = context.getClient().getSkillExperience(Skill.WOODCUTTING);
+            int xpGained = currentXp - scriptContext.getStartXp();
+            scriptContext.setLogsCut(xpGained / 25);
+        }
+    }
+
+    @Override
+    protected long onBehaviorTreeSuccess() {
+        return getRandomDelay(150, 250);
+    }
+
+    @Override
+    protected long onBehaviorTreeFailure() {
+        log.debug("Behavior tree iteration failed, retrying...");
+        return getRandomDelay(150, 250);
+    }
+
+    @Override
+    protected long onBehaviorTreeRunning() {
+        return getRandomDelay(150, 250);
+    }
+
+    private static long getRandomDelay(int min, int max) {
+        return min + (long) (Math.random() * (max - min + 1));
     }
 }

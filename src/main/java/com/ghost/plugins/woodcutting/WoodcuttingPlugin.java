@@ -4,7 +4,7 @@ import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import com.kraken.api.Context; // <-- Make sure this is imported
+import com.kraken.api.Context;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -15,6 +15,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.OverlayManager;
+import com.ghost.plugins.woodcutting.overlay.ScriptOverlay;
+import com.ghost.plugins.woodcutting.overlay.TargetTreeOverlay;
 
 @Slf4j
 @Singleton
@@ -42,7 +44,13 @@ public class WoodcuttingPlugin extends Plugin {
     private WoodcuttingScript woodcuttingScript;
 
     @Inject
-    private Context context; // <-- Inject the Context
+    private Context context;
+
+    @Inject
+    private ScriptOverlay scriptOverlay;
+    
+    @Inject
+    private TargetTreeOverlay targetTreeOverlay;
 
     @Provides
     WoodcuttingConfig provideConfig(final ConfigManager configManager) {
@@ -58,12 +66,10 @@ public class WoodcuttingPlugin extends Plugin {
     protected void startUp() {
         if (client.getGameState() == GameState.LOGGED_IN) {
             log.info("Starting Woodcutting Plugin...");
-
-            // --- LOAD BOTH ---
+            overlayManager.add(scriptOverlay);
+            overlayManager.add(targetTreeOverlay);
             context.loadHooks();
             context.loadPacketUtils();
-            // -----------------
-
             woodcuttingScript.start();
         }
     }
@@ -72,6 +78,8 @@ public class WoodcuttingPlugin extends Plugin {
     protected void shutDown() {
         if(woodcuttingScript.isRunning()) {
             log.info("Shutting down Woodcutting Plugin...");
+            overlayManager.remove(scriptOverlay);
+            overlayManager.remove(targetTreeOverlay);
             woodcuttingScript.stop();
         }
     }
