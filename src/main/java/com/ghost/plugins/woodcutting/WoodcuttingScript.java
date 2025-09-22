@@ -162,6 +162,7 @@ public class WoodcuttingScript extends BehaviorTreeScript {
         ));
 
         BehaviorNode choppingLogic = sequenceFactory.create(List.of(
+                notInventoryFull,
                 isInAreaCondition,
                 chopOrWaitSelector
         ));

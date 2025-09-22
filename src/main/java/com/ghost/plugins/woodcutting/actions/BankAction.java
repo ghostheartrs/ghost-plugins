@@ -36,20 +36,24 @@ public class BankAction implements ActionNode {
         this.context = context;
     }
 
+    private boolean isInventoryFull() {
+        return inventoryService.all().size() >= 28;
+    }
+
     @Override
     public BehaviorResult performAction() {
-        
+
         if (bankService.isOpen()) {
             scriptContext.setStatus("Depositing inventory...");
             log.info("Bank is open. Depositing all items.");
 
             bankService.depositAll();
-            sleepService.sleepUntil(inventoryService::isEmpty, 3000);
-            
+            sleepService.sleepUntil(() -> !isInventoryFull(), 3000);
+
             context.runOnClientThread(bankService::close);
             sleepService.sleepUntil(() -> !bankService.isOpen(), 2000);
-            
-            if (inventoryService.isEmpty()) {
+
+            if (!isInventoryFull()) {
                 log.info("Banking successful.");
                 return BehaviorResult.SUCCESS;
             } else {
@@ -57,7 +61,7 @@ public class BankAction implements ActionNode {
                 return BehaviorResult.FAILURE;
             }
         }
-        
+
         scriptContext.setStatus("Opening bank...");
         Player localPlayer = client.getLocalPlayer();
         if (localPlayer == null) {
