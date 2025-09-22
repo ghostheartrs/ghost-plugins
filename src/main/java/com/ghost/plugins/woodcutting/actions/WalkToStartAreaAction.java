@@ -30,21 +30,24 @@ public class WalkToStartAreaAction implements ActionNode {
         if (localPlayer == null || context.getStartLocation() == null) {
             return BehaviorResult.FAILURE;
         }
-        
-        if (localPlayer.getWorldLocation().distanceTo(context.getStartLocation()) <= 3) {
-            context.setStatus("Returned to start area.");
-            movementService.resetPath();
-            return BehaviorResult.SUCCESS;
-        }
 
         context.setStatus("Walking back to start");
         log.info("Player has wandered too far, walking back to start area.");
 
-        if (movementService.walkTo(context.getStartLocation())) {
-            return BehaviorResult.RUNNING;
-        }
+        MovementState state = movementService.walkWithState(context.getStartLocation(), 3);
 
-        log.warn("Failed to generate a path back to the start area.");
-        return BehaviorResult.FAILURE;
+        switch (state) {
+            case ARRIVED:
+                context.setStatus("Returned to start area.");
+                movementService.resetPath();
+                return BehaviorResult.SUCCESS;
+            case WALKING:
+            case BLOCKED:
+                return BehaviorResult.RUNNING;
+            case FAILED:
+            default:
+                log.warn("Failed to generate a path back to the start area.");
+                return BehaviorResult.FAILURE;
+        }
     }
 }

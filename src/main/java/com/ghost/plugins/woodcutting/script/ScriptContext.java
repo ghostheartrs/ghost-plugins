@@ -6,6 +6,9 @@ import lombok.Setter;
 import net.runelite.api.GameObject;
 import net.runelite.api.coords.WorldPoint;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Singleton
@@ -16,4 +19,6 @@ public class ScriptContext {
     private int logsCut = 0;
     private GameObject targetTree;
     private WorldPoint startLocation;
+    private List<WorldPoint> treeClusterLocations = new ArrayList<>();
+    private WorldPoint chopAndWaitLocation = null;
 }

@@ -3,13 +3,10 @@ package com.ghost.plugins.woodcutting.actions;
 import com.google.inject.Inject;
 import com.kraken.api.core.script.BehaviorResult;
 import com.kraken.api.core.script.node.ActionNode;
-import com.kraken.api.interaction.gameobject.GameObjectService;
 import com.kraken.api.interaction.movement.MovementService;
+import com.kraken.api.interaction.movement.MovementState;
 import com.ghost.plugins.woodcutting.WoodcuttingConfig;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-import net.runelite.api.GameObject;
-import net.runelite.api.Player;
 
 @Slf4j
 public class WalkToBankAction implements ActionNode {
@@ -25,10 +22,20 @@ public class WalkToBankAction implements ActionNode {
     @Override
     public BehaviorResult performAction() {
         log.info("Walking to {} bank.", config.bankLocation().getName());
-        if (movementService.walkTo(config.bankLocation().getWorldPoint())) {
-            return BehaviorResult.RUNNING;
+
+        MovementState state = movementService.walkWithState(config.bankLocation().getWorldPoint(), 3);
+
+        switch (state) {
+            case ARRIVED:
+                log.info("Arrived at bank.");
+                return BehaviorResult.SUCCESS;
+            case WALKING:
+            case BLOCKED:
+                return BehaviorResult.RUNNING;
+            case FAILED:
+            default:
+                log.warn("Failed to generate a path to the bank.");
+                return BehaviorResult.FAILURE;
         }
-        log.warn("Failed to generate a path to the bank.");
-        return BehaviorResult.FAILURE;
     }
 }

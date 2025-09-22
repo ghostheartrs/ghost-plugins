@@ -48,7 +48,7 @@ public class WoodcuttingPlugin extends Plugin {
 
     @Inject
     private ScriptOverlay scriptOverlay;
-    
+
     @Inject
     private TargetTreeOverlay targetTreeOverlay;
 
@@ -66,6 +66,7 @@ public class WoodcuttingPlugin extends Plugin {
     protected void startUp() {
         if (client.getGameState() == GameState.LOGGED_IN) {
             log.info("Starting Woodcutting Plugin...");
+            eventBus.register(woodcuttingScript);
             overlayManager.add(scriptOverlay);
             overlayManager.add(targetTreeOverlay);
             context.loadHooks();
@@ -78,6 +79,7 @@ public class WoodcuttingPlugin extends Plugin {
     protected void shutDown() {
         if(woodcuttingScript.isRunning()) {
             log.info("Shutting down Woodcutting Plugin...");
+            eventBus.unregister(woodcuttingScript);
             overlayManager.remove(scriptOverlay);
             overlayManager.remove(targetTreeOverlay);
             woodcuttingScript.stop();

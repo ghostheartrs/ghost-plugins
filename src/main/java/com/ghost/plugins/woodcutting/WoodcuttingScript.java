@@ -15,18 +15,24 @@ import com.ghost.plugins.woodcutting.conditions.IsOutOfAreaCondition;
 import com.ghost.plugins.woodcutting.factory.SelectorNodeFactory;
 import com.ghost.plugins.woodcutting.factory.SequenceNodeFactory;
 import com.ghost.plugins.woodcutting.script.ScriptContext;
+import com.ghost.plugins.woodcutting.types.ChoppingMode;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.kraken.api.Context;
 import com.kraken.api.core.script.BehaviorNode;
 import com.kraken.api.core.script.BehaviorTreeScript;
 import com.kraken.api.core.script.node.ConditionNode;
+import com.kraken.api.interaction.gameobject.GameObjectService;
+import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Skill;
-import net.runelite.api.AnimationID;
-import net.runelite.api.events.StatChanged;
+import net.runelite.api.*;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.client.eventbus.Subscribe;
 
 @Slf4j
@@ -59,10 +65,13 @@ public class WoodcuttingScript extends BehaviorTreeScript {
     private final SelectorNodeFactory selectorFactory;
     private final IsOutOfAreaCondition isOutOfAreaCondition;
     private final WalkToStartAreaAction walkToStartAreaAction;
+    private final GameObjectService gameObjectService;
 
     @Getter
     private final ScriptContext scriptContext;
     private final Context context;
+
+    private int lastKnownLogCount = 0;
 
     @Inject
     public WoodcuttingScript(Context context,
@@ -81,6 +90,7 @@ public class WoodcuttingScript extends BehaviorTreeScript {
                              SelectorNodeFactory selectorFactory,
                              IsOutOfAreaCondition isOutOfAreaCondition,
                              WalkToStartAreaAction walkToStartAreaAction,
+                             GameObjectService gameObjectService,
                              ScriptContext scriptContext) {
         super(context);
         this.context = context;
@@ -99,27 +109,36 @@ public class WoodcuttingScript extends BehaviorTreeScript {
         this.selectorFactory = selectorFactory;
         this.isOutOfAreaCondition = isOutOfAreaCondition;
         this.walkToStartAreaAction = walkToStartAreaAction;
+        this.gameObjectService = gameObjectService;
         this.scriptContext = scriptContext;
     }
 
     @Override
     protected BehaviorNode buildBehaviorTree() {
         ConditionNode bankingEnabled = () -> config.bankingEnabled();
+        ConditionNode bankingDisabled = () -> !config.bankingEnabled();
         ConditionNode notAtBank = () -> !atBankCondition.checkCondition();
         ConditionNode notAtTrees = () -> !atTreesCondition.checkCondition();
         ConditionNode notInventoryFull = () -> !inventoryFullCondition.checkCondition();
+        ConditionNode isInAreaCondition = () -> !isOutOfAreaCondition.checkCondition();
 
-        BehaviorNode bankingSequence = sequenceFactory.create(List.of(
-                bankingEnabled,
-                selectorFactory.create(List.of(
-                        sequenceFactory.create(List.of(notAtBank, walkToBankAction)),
-                        bankAction
-                ))
+        BehaviorNode bankingRoutine = selectorFactory.create(List.of(
+                sequenceFactory.create(List.of(notAtBank, walkToBankAction)),
+                bankAction
         ));
 
         BehaviorNode handleFullInventory = sequenceFactory.create(List.of(
                 inventoryFullCondition,
-                selectorFactory.create(List.of(bankingSequence, dropLogsAction))
+                selectorFactory.create(List.of(
+                        sequenceFactory.create(List.of(
+                                bankingEnabled,
+                                bankingRoutine
+                        )),
+                        sequenceFactory.create(List.of(
+                                bankingDisabled,
+                                dropLogsAction
+                        ))
+                ))
         ));
 
         BehaviorNode returnToTrees = sequenceFactory.create(List.of(
@@ -137,9 +156,14 @@ public class WoodcuttingScript extends BehaviorTreeScript {
                 walkToTreesAction
         ));
 
-        BehaviorNode choppingLogic = selectorFactory.create(List.of(
+        BehaviorNode chopOrWaitSelector = selectorFactory.create(List.of(
                 sequenceFactory.create(List.of(isChoppingCondition, waitAction)),
                 chopTreeAction
+        ));
+
+        BehaviorNode choppingLogic = sequenceFactory.create(List.of(
+                isInAreaCondition,
+                chopOrWaitSelector
         ));
 
         BehaviorNode handleWandering = sequenceFactory.create(List.of(
@@ -159,21 +183,78 @@ public class WoodcuttingScript extends BehaviorTreeScript {
     @Override
     protected void onBehaviorTreeStart() {
         log.info("Woodcutting Script started!");
+
         scriptContext.setStartTime(System.currentTimeMillis());
         scriptContext.setStartXp(context.getClient().getSkillExperience(Skill.WOODCUTTING));
         scriptContext.setLogsCut(0);
+        scriptContext.setTargetTree(null);
+        scriptContext.setChopAndWaitLocation(null);
+        scriptContext.getTreeClusterLocations().clear();
+        lastKnownLogCount = 0;
+
         if (context.getClient().getLocalPlayer() != null) {
             scriptContext.setStartLocation(context.getClient().getLocalPlayer().getWorldLocation());
+        }
+
+        if (config.choppingMode() == ChoppingMode.CLUSTER) {
+            populateTreeCluster();
+        }
+    }
+
+    private void populateTreeCluster() {
+        scriptContext.setStatus("Finding tree cluster...");
+        Player localPlayer = context.getClient().getLocalPlayer();
+        if (localPlayer != null) {
+            List<Integer> targetTreeIds = config.treeType().getTreeIds();
+            Predicate<GameObject> isAValidTree = o -> {
+                if (o == null || !targetTreeIds.contains(o.getId())) {
+                    return false;
+                }
+                return context.runOnClientThread(() -> {
+                    ObjectComposition comp = context.getClient().getObjectDefinition(o.getId());
+                    if (comp != null && comp.getImpostorIds() != null) {
+                        comp = comp.getImpostor();
+                    }
+                    return comp != null && gameObjectService.hasAction(comp, "Chop down");
+                });
+            };
+
+            List<WorldPoint> nearbyTreeLocations = gameObjectService.getGameObjects(
+                            isAValidTree,
+                            localPlayer.getWorldLocation(),
+                            15
+                    ).stream()
+                    .sorted(Comparator.comparingInt(tree ->
+                            tree.getWorldLocation().distanceTo(localPlayer.getWorldLocation())))
+                    .limit(3)
+                    .map(GameObject::getWorldLocation)
+                    .collect(Collectors.toList());
+
+            scriptContext.setTreeClusterLocations(nearbyTreeLocations);
+            log.info("Found {} tree locations for the cluster.", nearbyTreeLocations.size());
         }
     }
 
     @Subscribe
-    public void onStatChanged(StatChanged statChanged) {
-        if (statChanged.getSkill() == Skill.WOODCUTTING) {
-            int currentXp = context.getClient().getSkillExperience(Skill.WOODCUTTING);
-            int xpGained = currentXp - scriptContext.getStartXp();
-            scriptContext.setLogsCut(xpGained / 25);
+    public void onItemContainerChanged(ItemContainerChanged event) {
+        if (event.getContainerId() != InventoryID.INV || !isRunning()) {
+            return;
         }
+
+        ItemContainer container = event.getItemContainer();
+        if (container == null) {
+            return;
+        }
+
+        int logId = config.treeType().getLogId();
+        int currentLogCount = container.count(logId);
+
+        if (currentLogCount > lastKnownLogCount) {
+            int logsGained = currentLogCount - lastKnownLogCount;
+            scriptContext.setLogsCut(scriptContext.getLogsCut() + logsGained);
+        }
+
+        lastKnownLogCount = currentLogCount;
     }
 
     @Override

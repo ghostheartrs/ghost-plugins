@@ -9,11 +9,7 @@ import com.ghost.plugins.woodcutting.WoodcuttingConfig;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
-import net.runelite.api.ObjectComposition;
 import net.runelite.api.Player;
-
-import java.util.List;
-import java.util.function.Predicate;
 
 @Slf4j
 public class WalkToTreesAction implements ActionNode {
@@ -40,10 +36,10 @@ public class WalkToTreesAction implements ActionNode {
 
         GameObject nearestTree = gameObjectService.findReachableObject(
                 config.treeType().getName(),
-                true,
-                40,   // Distance
+                false,
+                40,
                 localPlayer.getWorldLocation(),
-                true, // Check for an action
+                true,
                 "Chop down"
         );
 

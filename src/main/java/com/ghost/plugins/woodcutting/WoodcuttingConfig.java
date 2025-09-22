@@ -1,11 +1,12 @@
 package com.ghost.plugins.woodcutting;
 
+import com.ghost.plugins.woodcutting.types.BankLocation;
+import com.ghost.plugins.woodcutting.types.ChoppingMode;
 import com.ghost.plugins.woodcutting.types.Tree;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
-import com.ghost.plugins.woodcutting.types.BankLocation;
 
 @ConfigGroup("autowoodcutting")
 public interface WoodcuttingConfig extends Config {
@@ -29,10 +30,32 @@ public interface WoodcuttingConfig extends Config {
     }
 
     @ConfigItem(
+            keyName = "choppingMode",
+            name = "Chopping Mode",
+            description = "Determines how the script finds trees to chop.",
+            position = 1,
+            section = general
+    )
+    default ChoppingMode choppingMode() {
+        return ChoppingMode.DYNAMIC;
+    }
+
+    @ConfigItem(
+            keyName = "wanderDistance",
+            name = "Dynamic Wander",
+            description = "Square radius around player to chop, returns to middle if too far.",
+            position = 2,
+            section = general
+    )
+    default int wanderDistance() {
+        return 15;
+    }
+
+    @ConfigItem(
             keyName = "highlightTargetTree",
             name = "Highlight Target Tree",
             description = "Highlights the selected tree to chop.",
-            position = 1,
+            position = 3,
             section = general
     )
     default boolean highlightTargetTree() {
@@ -43,7 +66,7 @@ public interface WoodcuttingConfig extends Config {
             keyName = "showDebugInfo",
             name = "Show Debug Info",
             description = "Displays debugging information on the overlay.",
-            position = 2,
+            position = 4,
             section = general
     )
     default boolean showDebugInfo() {
@@ -67,6 +90,7 @@ public interface WoodcuttingConfig extends Config {
     default boolean bankingEnabled() {
         return false;
     }
+
     @ConfigItem(
             keyName = "bankLocation",
             name = "Bank Location",
@@ -76,22 +100,5 @@ public interface WoodcuttingConfig extends Config {
     )
     default BankLocation bankLocation() {
         return BankLocation.DRAYNOR_VILLAGE;
-    }
-    @ConfigSection(
-            name = "Area",
-            description = "Configure area settings",
-            position = 2
-    )
-    String area = "Area";
-
-    @ConfigItem(
-            keyName = "wanderDistance",
-            name = "Wander Distance",
-            description = "Max distance (tiles) to wander from start point. 0 to disable.",
-            position = 0,
-            section = area
-    )
-    default int wanderDistance() {
-        return 15;
     }
 }
