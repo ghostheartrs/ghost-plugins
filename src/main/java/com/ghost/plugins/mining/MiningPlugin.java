@@ -28,7 +28,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Slf4j
 @Singleton
 @PluginDescriptor(
-        name = "<html><font color=\"#FF0000\">[GH] </font>Mining</html>",
+        name = "<html><font color=\"#FF0000\">[\uD83D\uDC7B] </font>Mining</html>",
         enabledByDefault = false,
         description = "Ghost's AIO Mining plugin.",
         tags = {"example", "automation", "kraken"}

@@ -16,7 +16,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 @Slf4j
 @PluginDescriptor(
-        name = "<html><font color=\"#FF0000\">[GH] </font>Tutorial Island</html>",
+        name = "<html><font color=\"#FF0000\">[\uD83D\uDC7B] </font>Tutorial Island</html>",
         description = "Automates Tutorial Island.",
         tags = {"tutorial", "automation", "kraken", "ghost"},
         enabledByDefault = false

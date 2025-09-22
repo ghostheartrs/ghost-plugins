@@ -21,7 +21,7 @@ import com.ghost.plugins.woodcutting.overlay.TargetTreeOverlay;
 @Slf4j
 @Singleton
 @PluginDescriptor(
-        name = "<html><font color=\"#FF0000\">[GH] </font>Woodcutting</html>",
+        name = "<html><font color=\"#FF0000\">[\uD83D\uDC7B] </font>Woodcutting</html>",
         enabledByDefault = false,
         description = "Ghost's AIO woodcutting plugin.",
         tags = {"woodcutting", "automation", "kraken", "ghost"}
