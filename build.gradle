@@ -23,7 +23,7 @@ sourceSets {
 }
 
 def runeLiteVersion = 'latest.release'
-def krakenApiVersion = '1.0.122'
+def krakenApiVersion = '1.0.131'
 
 group = 'com.krakenplugins'
 version = '1.0.0'
