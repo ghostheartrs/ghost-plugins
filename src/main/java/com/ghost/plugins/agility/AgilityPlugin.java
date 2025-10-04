@@ -4,7 +4,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-        name = "<html><font color=\"#FF0000\">[\uD83D\uDC7B] </font>Semi-Auto Agility</html>",
+        name = "<html><font color=\"#FF0000\">[\uD83D\uDC7B] </font>Agility</html>",
         description = "Semi Automatic Agility training.",
         tags = {"agility", "automation", "kraken", "ghost"}
 )
