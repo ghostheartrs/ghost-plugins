@@ -47,10 +47,6 @@ test {
     useJUnitPlatform()
 }
 
-tasks.named('processResources') {
-    exclude 'META-INF/services/com.krakenplugins.ghostloader.IManagedPlugin'
-}
-
 tasks.named('shadowJar', ShadowJar) {
     mergeServiceFiles()
     archiveFileName.set("${project.name}-${project.version}.jar")
